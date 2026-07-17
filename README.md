@@ -7,4 +7,4 @@ Das Word Dokument [Future Learning Lab KI](https://eduzh.sharepoint.com/:w:/r/te
 # Anzeige als html
 [PCR-Animation Schrittweise für Studierende](https://aapdinternet.github.io/TAS2R38/PCR_Funktionsweise_Animation.html)  
 
-[PCR-Animation Schrittweise für Studierende](https://aapdinternet.github.io/TAS2R38/PCR_ARMS_Animation_TAS2R38.html)  
+[PCR-ARMS-PCR-TAS2R38-Darstellung](https://aapdinternet.github.io/TAS2R38/PCR_ARMS_Animation_TAS2R38.html)  
