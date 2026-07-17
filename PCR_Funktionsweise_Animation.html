@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PCR im Detail – klickbare Animation</title>
+</head>
+<body style="margin:0;background:#f2f3f5;">
+<div id="pcrwrap">
+<style>
+#pcrwrap{max-width:760px;margin:16px auto;padding:18px 18px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:#1a1a1a;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+#pcrwrap .hd{font-size:16px;font-weight:600;margin:0 0 6px;}
+#pcrwrap svg{display:block;width:100%;height:auto;}
+#pcrwrap text{font-family:inherit;}
+#pcrwrap .lbl{font-size:11px;fill:#5b6472;}
+#pcrwrap .hbnd{stroke:#8a9199;stroke-width:1;}
+#pcrwrap .base{font-size:12px;font-weight:700;}
+#pcrwrap .taqE{fill:#70ad47;fill-opacity:.55;stroke:#4c7a2f;stroke-width:.75;}
+#pcrwrap .taqT{font-size:12px;font-weight:700;fill:#1b3d0f;}
+#pcrwrap .ax{stroke:#94a3b8;stroke-width:1;}
+#pcrwrap .curve{fill:none;stroke:#1d9e75;stroke-width:2;}
+#pcrwrap .cdot{fill:#1d9e75;}
+#pcrwrap .dna{fill:#5b9bd5;stroke:#2f6ca8;stroke-width:.75;}
+#pcrwrap .dcore{fill:#ed7d31;}
+#pcrwrap .txt{min-height:56px;margin:8px 2px 10px;}
+#pcrwrap .st{font-size:15px;font-weight:600;margin-bottom:2px;}
+#pcrwrap .sd{font-size:13.5px;color:#374151;line-height:1.45;}
+#pcrwrap .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#pcrwrap button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid #cbd2d9;background:#f7f8f9;color:#1a1a1a;border-radius:8px;cursor:pointer;}
+#pcrwrap button:hover{background:#eef0f2;}
+#pcrwrap button:disabled{opacity:.4;cursor:default;}
+#pcrwrap #next{background:#1d9e75;border-color:#0f6e56;color:#fff;font-weight:600;}
+#pcrwrap #next:hover{background:#178a66;}
+#pcrwrap .dots{display:flex;gap:5px;margin-left:4px;flex-wrap:wrap;}
+#pcrwrap .navdot{width:9px;height:9px;border-radius:50%;background:#d1d5db;border:none;padding:0;cursor:pointer;}
+#pcrwrap .navdot.on{background:#1d9e75;}
+#pcrwrap .cnt{margin-left:auto;font-size:12px;color:#5b6472;}
+#pcrwrap:fullscreen{max-width:none;width:100vw;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;}
+#pcrwrap:-webkit-full-screen{max-width:none;width:100vw;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;}
+#pcrwrap:fullscreen .hd{font-size:22px;}
+#pcrwrap:fullscreen svg{max-height:62vh;}
+#pcrwrap:-webkit-full-screen svg{max-height:62vh;}
+#pcrwrap:fullscreen .st{font-size:19px;}
+#pcrwrap:fullscreen .sd{font-size:16px;}
+#pcrwrap:fullscreen button{font-size:15px;padding:8px 16px;}
+</style>
+<div class="hd">PCR im Detail – Schritt für Schritt (klickbar)</div>
+<svg id="stage" viewBox="0 0 680 240" role="img" aria-label="Detaillierte klickbare PCR-Animation mit Doppelhelix, Wasserstoffbrücken, 15mer-Primer, mitlaufender Taq und exponentieller Verdopplung">
+<g id="molG">
+<g id="tempBadge" style="display:none"><rect id="tempRect" x="546" y="8" width="118" height="22" rx="11" fill="#e5e7eb"/><text id="tempTxt" x="605" y="23" text-anchor="middle" font-size="14" font-weight="700"></text></g>
+<text id="cyclabel" x="24" y="22" font-size="13" font-weight="700" fill="#0f6e56"></text>
+<g id="helixG"></g>
+<g id="ladderG" style="display:none">
+<g id="botG"></g><g id="hbG"></g><g id="topG"></g><g id="endsG"></g>
+<g id="polyG" style="opacity:0"><ellipse class="taqE" cx="48" cy="128" rx="26" ry="28"/><text class="taqT" x="48" y="132" text-anchor="middle">Taq</text></g>
+</g>
+</g>
+<g id="expoG" style="display:none">
+<text id="expoCount" x="340" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a"></text>
+<g id="expoDyn"></g>
+<line class="ax" x1="150" y1="220" x2="545" y2="220"/><line class="ax" x1="150" y1="220" x2="150" y2="135"/>
+<text class="lbl" x="345" y="236" text-anchor="middle">Zyklus (N)</text>
+<text class="lbl" x="150" y="130" text-anchor="middle">Kopien</text>
+</g>
+</svg>
+<div class="txt"><div class="st"></div><div class="sd"></div></div>
+<div class="ctl">
+<button id="prev">◀ Zurück</button>
+<button id="next">Weiter ▶</button>
+<button id="reset">↺ Zum Anfang</button>
+<button id="fs">⛶ Vollbild</button>
+<span class="dots" id="dots"></span>
+<span class="cnt" id="cnt"></span>
+</div>
+<script>
+(function(){
+var W=document.getElementById('pcrwrap');var NS='http://www.w3.org/2000/svg';
+var $=function(s){return W.querySelector(s);};
+var TOP="GCATTCGACTGGATCCAGTGCCTAGGTAAC";var CM={A:'T',T:'A',G:'C',C:'G'};
+var BOT=TOP.split('').map(function(b){return CM[b];});
+var N=TOP.length,x0=48,cw=19;function xi(c){return x0+c*cw;}
+var COL={A:'#2e7d32',T:'#c62828',G:'#ef6c00',C:'#1565c0'};
+function hb(c){return (TOP[c]==='G'||TOP[c]==='C')?3:2;}
+function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+function baseText(c,y,ch){return E('text',{x:xi(c),y:y,'text-anchor':'middle','class':'base',fill:COL[ch]});}
+function put(g,el,txt){if(txt!=null)el.textContent=txt;g.appendChild(el);return el;}
+var helixG=$('#helixG'),botG=$('#botG'),topG=$('#topG'),hbG=$('#hbG'),endsG=$('#endsG'),polyG=$('#polyG'),expoDyn=$('#expoDyn');
+function buildHelix(){
+  helixG.innerHTML='';var A=20,mid=104,L=72,x1=70,x2=612,p1=[],p2=[];
+  for(var x=x1;x<=x2;x+=4){var s=Math.sin(2*Math.PI*x/L);p1.push(x+','+(mid+A*s));p2.push(x+','+(mid-A*s));}
+  for(var xx=x1+8;xx<x2;xx+=18){var s2=Math.sin(2*Math.PI*xx/L);put(helixG,E('line',{x1:xx,y1:mid+A*s2,x2:xx,y2:mid-A*s2,stroke:'#8a9199','stroke-width':1}));}
+  put(helixG,E('polyline',{points:p1.join(' '),fill:'none',stroke:'#2f6ca8','stroke-width':3.5,'stroke-linecap':'round'}));
+  put(helixG,E('polyline',{points:p2.join(' '),fill:'none',stroke:'#1f4e79','stroke-width':3.5,'stroke-linecap':'round'}));
+  put(helixG,E('text',{x:x1-24,y:mid-16,'class':'lbl'}),"5′");put(helixG,E('text',{x:x2+6,y:mid-16,'class':'lbl'}),"3′");
+  put(helixG,E('text',{x:x1-24,y:mid+22,'class':'lbl'}),"3′");put(helixG,E('text',{x:x2+6,y:mid+22,'class':'lbl'}),"5′");
+  put(helixG,E('text',{x:340,y:176,'text-anchor':'middle','class':'lbl'}),"Doppelhelix · antiparallele Stränge, verbunden über H-Brücken");
+}
+function bb(a,b,y,color){return E('rect',{x:xi(a)-8,y:y,width:(b-a)*cw+16,height:4,rx:2,fill:color});}
+function buildTemplate(){botG.innerHTML='';put(botG,bb(0,N-1,151,'#2f6ca8'));for(var c=0;c<N;c++)put(botG,baseText(c,143,BOT[c]),BOT[c]);}
+function renderEnds(count){endsG.innerHTML='';put(endsG,E('text',{x:xi(0)-34,y:147,'class':'lbl'}),"3′");put(endsG,E('text',{x:xi(N-1)+12,y:147,'class':'lbl'}),"5′");if(count>0){put(endsG,E('text',{x:xi(0)-34,y:119,'class':'lbl'}),"5′");put(endsG,E('text',{x:xi(count-1)+12,y:119,'class':'lbl'}),"3′");}}
+function renderTop(count){topG.innerHTML='';if(count>0){var pend=Math.min(15,count);put(topG,bb(0,pend-1,106,'#ea7317'));if(count>15)put(topG,bb(15,count-1,106,'#4c9a2a'));for(var c=0;c<count;c++)put(topG,baseText(c,120,TOP[c]),TOP[c]);}renderEnds(count);}
+function renderHb(count){hbG.innerHTML='';for(var c=0;c<count;c++){var k=hb(c),sx=xi(c)-(k-1)*1.5;for(var j=0;j<k;j++){var xx=sx+j*3;put(hbG,E('line',{x1:xx,y1:123,x2:xx,y2:131,'class':'hbnd'}));}}}
+function polyX(colf){polyG.style.transform='translateX('+(colf*cw)+'px)';}
+function polyShow(on){polyG.style.opacity=on?1:0;}
+function setTemp(txt,bg,fg){var b=$('#tempBadge');if(!txt){b.style.display='none';return;}b.style.display='';$('#tempRect').setAttribute('fill',bg);var t=$('#tempTxt');t.textContent=txt;t.setAttribute('fill',fg);}
+function copyIcon(x,y){var g=E('g',{});put(g,E('rect',{x:x,y:y,width:32,height:15,rx:7,'class':'dna'}));put(g,E('rect',{x:x,y:y+6,width:32,height:3,'class':'dcore'}));return g;}
+
+var steps=[
+{t:"Doppelhelix",d:"Doppelsträngige DNA als Doppelhelix. Die beiden Stränge sind antiparallel (5′→3′ bzw. 3′→5′) und über Wasserstoffbrücken verbunden."},
+{t:"1 · Denaturierung · 95 °C",d:"Hitze trennt die Wasserstoffbrücken (A=T zwei, G≡C drei). Der Doppelstrang öffnet sich zu Einzelsträngen."},
+{t:"2 · Annealing · 55–65 °C",d:"Ein 15-mer-Primer (5′→3′) hybridisiert passgenau über Wasserstoffbrücken an den Matrizenstrang. Sein freies 3′-Ende zeigt in Syntheserichtung."},
+{t:"3 · Taq bindet · 72 °C",d:"Die Taq-Polymerase setzt sich an das freie 3′-Ende des Primers."},
+{t:"4 · Elongation · 72 °C",d:"Die Taq fährt am Matrizenstrang entlang und hängt Nukleotide nur an das 3′-Ende an – Synthese läuft ausschließlich in 5′→3′-Richtung."},
+{t:"5 · Fertiger Doppelstrang",d:"Der komplementäre Strang ist vollständig. Die Taq löst sich – aus 1 Doppelstrang sind 2 geworden."},
+{t:"6 · Zweiter Zyklus",d:"Der neue Doppelstrang durchläuft denselben Zyklus: Denaturieren → Annealing → Elongation. Läuft automatisch durch (→ 4 Kopien)."},
+{t:"Exponentiell · Zyklus 1",d:"Ab jetzt in der Übersicht: Jeder Zyklus verdoppelt die Menge. Zyklus 1 → 2 Kopien."},
+{t:"Exponentiell · Zyklus 2",d:"Zyklus 2 → 4 Kopien."},
+{t:"Exponentiell · Zyklus 3",d:"Zyklus 3 → 8 Kopien."},
+{t:"Exponentiell · Zyklus 4",d:"Zyklus 4 → 16 Kopien."},
+{t:"Formel 2ᴺ",d:"Allgemein: Anzahl Kopien = 2ᴺ. Nach rund 30 Zyklen entstehen etwa 1 Milliarde Kopien (10⁹)."}
+];
+var i=0,token=0,raf=null,timers=[];
+function clearAnim(){token++;if(raf){cancelAnimationFrame(raf);raf=null;}for(var k=0;k<timers.length;k++)clearTimeout(timers[k]);timers=[];
+  [polyG,topG,hbG,expoDyn].forEach(function(el){if(el&&el.getAnimations)el.getAnimations().forEach(function(a){a.cancel();});});
+  polyG.style.transition='none';polyG.style.transform='translateX(0px)';polyG.style.opacity=0;topG.style.transform='';topG.style.opacity=1;hbG.style.opacity=1;}
+function later(fn,ms){var id=setTimeout(fn,ms);timers.push(id);return id;}
+function anim(el,fr,op){return el.animate(fr,op);}
+function showMol(on){$('#molG').style.display=on?'':'none';$('#expoG').style.display=on?'none':'';}
+
+function elongateRAF(fromCount,toCount,dur,tok,onDone){
+  var startCol=fromCount-1,endCol=toCount-1,t0=null;polyShow(true);polyG.style.transition='none';polyX(startCol);
+  function frame(ts){if(tok!==token)return;if(t0===null)t0=ts;var p=(ts-t0)/dur;if(p>1)p=1;
+    var cnt=Math.round(fromCount+(toCount-fromCount)*p);renderTop(cnt);renderHb(cnt);
+    polyX(startCol+(endCol-startCol)*p);
+    if(p<1)raf=requestAnimationFrame(frame);else{raf=null;if(onDone)onDone();}}
+  raf=requestAnimationFrame(frame);
+}
+function denature(dur,tok,onDone){
+  renderTop(N);renderHb(N);topG.style.transform='';topG.style.opacity=1;hbG.style.opacity=1;polyShow(false);
+  anim(hbG,[{opacity:1},{opacity:0}],{duration:dur*0.7,fill:'forwards'});
+  var a=anim(topG,[{transform:'translateY(0)',opacity:1},{transform:'translateY(-48px)',opacity:0}],{duration:dur,easing:'ease-in',fill:'forwards'});
+  a.onfinish=function(){if(tok!==token)return;renderTop(0);renderHb(0);topG.style.transform='';topG.style.opacity=1;hbG.style.opacity=1;if(onDone)onDone();};
+}
+function anneal(dur,tok,onDone){
+  renderTop(15);renderHb(0);topG.style.opacity=1;
+  anim(topG,[{transform:'translateY(-36px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:dur,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+  later(function(){if(tok!==token)return;renderHb(15);anim(hbG,[{opacity:0},{opacity:1}],{duration:400,fill:'both'});if(onDone)onDone();},dur*0.8);
+}
+
+function expoRender(step){
+  while(expoDyn.firstChild)expoDyn.removeChild(expoDyn.firstChild);
+  var summary=(step===11),cyc=summary?4:(step-6),count=Math.pow(2,cyc);
+  for(var k=0;k<count;k++){var col=k%8,row=Math.floor(k/8);expoDyn.appendChild(copyIcon(56+col*42,50+row*34));}
+  var maxv=summary?64:16,cmax=summary?6:cyc,xf=function(c){return 150+c*60;},yf=function(v){return 220-(v/maxv)*80;};
+  var pts='';for(var c=0;c<=cmax;c++){var v=Math.pow(2,c);pts+=xf(c)+','+yf(v)+' ';put(expoDyn,E('circle',{cx:xf(c),cy:yf(v),r:3,'class':'cdot'}));}
+  put(expoDyn,E('polyline',{points:pts.trim(),'class':'curve'}));
+  if(summary){put(expoDyn,E('line',{x1:xf(6),y1:yf(64),x2:xf(6),y2:220,stroke:'#94a3b8','stroke-width':1,'stroke-dasharray':'3 3'}));put(expoDyn,E('text',{x:xf(6),y:yf(64)-6,'text-anchor':'end','class':'lbl'}),"N=30 → ≈10⁹");}
+  $('#expoCount').textContent=summary?'Anzahl Kopien = 2ᴺ':('Zyklus '+cyc+' · 2^'+cyc+' = '+count+' Kopien');
+  anim(expoDyn,[{opacity:0},{opacity:1}],{duration:420,fill:'both'});
+}
+
+function render(n){
+  clearAnim();i=n;var tok=token;
+  $('.st').textContent=steps[n].t;$('.sd').textContent=steps[n].d;
+  $('#cnt').textContent='Schritt '+(n+1)+' / '+steps.length;
+  var d=W.querySelectorAll('.navdot');for(var m=0;m<d.length;m++)d[m].className='navdot'+(m===n?' on':'');
+  $('#prev').disabled=(n===0);$('#next').disabled=(n===steps.length-1);
+  if(n>=7){showMol(false);expoRender(n);return;}
+  showMol(true);
+  $('#cyclabel').textContent=(n>=5)?'Zyklus 1 → 2 Kopien':(n>=1?'Zyklus 1':'');
+  $('#ladderG').style.display=(n===0)?'none':'';helixG.style.display=(n===0)?'':'none';
+  if(n===0){setTemp(null);polyShow(false);return;}
+  if(n===1){setTemp('95 °C','#f6d0c8','#7a1f10');denature(1600,tok,null);}
+  else if(n===2){setTemp('55–65 °C','#cfe0f2','#123a63');polyShow(false);anneal(1400,tok,null);}
+  else if(n===3){setTemp('72 °C','#fbe3c8','#7a4410');renderTop(15);renderHb(15);hbG.style.opacity=1;polyG.style.transition='none';polyX(14);anim(polyG,[{opacity:0},{opacity:1}],{duration:500,fill:'both'});polyShow(true);}
+  else if(n===4){setTemp('72 °C','#fbe3c8','#7a4410');renderTop(15);renderHb(15);hbG.style.opacity=1;elongateRAF(16,N,2600,tok,null);}
+  else if(n===5){setTemp(null);renderTop(N);renderHb(N);hbG.style.opacity=1;polyShow(true);polyG.style.transition='none';polyX(N-1);anim(polyG,[{opacity:1,transform:'translateX('+((N-1)*cw)+'px) translateY(0)'},{opacity:0,transform:'translateX('+((N-1)*cw)+'px) translateY(64px)'}],{duration:1000,easing:'ease-in',fill:'forwards'});}
+  else if(n===6){
+    setTemp(null);$('#cyclabel').textContent='Zyklus 2';renderTop(N);renderHb(N);hbG.style.opacity=1;polyShow(false);topG.style.opacity=1;topG.style.transform='';
+    later(function(){if(tok!==token)return;setTemp('95 °C','#f6d0c8','#7a1f10');denature(1500,tok,function(){
+      if(tok!==token)return;setTemp('55–65 °C','#cfe0f2','#123a63');
+      later(function(){if(tok!==token)return;anneal(1300,tok,function(){
+        if(tok!==token)return;setTemp('72 °C','#fbe3c8','#7a4410');
+        later(function(){if(tok!==token)return;polyG.style.transition='none';polyX(14);polyShow(true);anim(polyG,[{opacity:0},{opacity:1}],{duration:400,fill:'both'});
+          later(function(){if(tok!==token)return;elongateRAF(16,N,2400,tok,function(){if(tok!==token)return;setTemp(null);$('#cyclabel').textContent='Zyklus 2 → 4 Kopien';
+            anim(polyG,[{opacity:1,transform:'translateX('+((N-1)*cw)+'px) translateY(0)'},{opacity:0,transform:'translateX('+((N-1)*cw)+'px) translateY(64px)'}],{duration:900,easing:'ease-in',fill:'forwards'});});},500);
+        },700);
+      });},500);
+    });},500);
+  }
+}
+function go(n){if(n<0)n=0;if(n>steps.length-1)n=steps.length-1;render(n);}
+var dc=$('#dots');for(var q=0;q<steps.length;q++){(function(idx){var b=document.createElement('button');b.className='navdot';b.setAttribute('aria-label','Schritt '+(idx+1));b.onclick=function(){go(idx);};dc.appendChild(b);})(q);}
+$('#prev').onclick=function(){go(i-1);};$('#next').onclick=function(){go(i+1);};$('#reset').onclick=function(){go(0);};
+var fsbtn=$('#fs');function inFs(){return document.fullscreenElement||document.webkitFullscreenElement;}
+fsbtn.onclick=function(){if(!inFs()){(W.requestFullscreen||W.webkitRequestFullscreen).call(W);}else{(document.exitFullscreen||document.webkitExitFullscreen).call(document);}};
+function fsSync(){fsbtn.textContent=inFs()?'✕ Vollbild beenden':'⛶ Vollbild';}
+document.addEventListener('fullscreenchange',fsSync);document.addEventListener('webkitfullscreenchange',fsSync);
+buildHelix();buildTemplate();renderTop(0);renderHb(0);render(0);
+})();
+</script>
+</div>
+</body>
+</html>
