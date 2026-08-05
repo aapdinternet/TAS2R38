@@ -8,7 +8,7 @@
 <body style="margin:0;background:#f2f3f5;">
 <div id="pcrwrap">
 <style>
-#pcrwrap{max-width:860px;margin:16px auto;padding:18px 18px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:#1a1a1a;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+#pcrwrap{max-width:740px;margin:16px auto;padding:18px 18px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:#1a1a1a;box-shadow:0 1px 3px rgba(0,0,0,.06);}
 #pcrwrap .hd{font-size:16px;font-weight:600;margin:0 0 8px;}
 #pcrwrap svg{display:block;width:100%;height:auto;}
 #pcrwrap text{font-family:inherit;}
@@ -16,8 +16,6 @@
 #pcrwrap .ts{font-size:12px;fill:#5b6472;}
 #pcrwrap .th{font-size:14px;font-weight:600;fill:#1a1a1a;}
 #pcrwrap .strand{stroke:#94a3b8;stroke-width:1.5;}
-#pcrwrap .strandx{stroke:#94a3b8;stroke-width:1.5;stroke-dasharray:5 5;opacity:.7;}
-#pcrwrap .cont{font-size:17px;fill:#94a3b8;font-weight:700;}
 #pcrwrap .mk{stroke:#5b6472;stroke-width:1;}
 #pcrwrap .snp{stroke:#5b6472;stroke-width:1;stroke-dasharray:3 3;}
 #pcrwrap .tri{fill:#1a1a1a;}
@@ -46,41 +44,24 @@
 #pcrwrap .dot{width:10px;height:10px;border-radius:50%;background:#d1d5db;border:none;padding:0;cursor:pointer;}
 #pcrwrap .dot.on{background:#1d9e75;}
 #pcrwrap .cnt{margin-left:auto;font-size:12px;color:#5b6472;}
-#pcrwrap:fullscreen{max-width:none;width:100vw;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;overflow:auto;padding:20px 24px;}
-#pcrwrap:-webkit-full-screen{max-width:none;width:100vw;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;overflow:auto;padding:20px 24px;}
-#pcrwrap:fullscreen .hd{font-size:22px;}
-#pcrwrap:fullscreen svg{max-height:70vh;}
-#pcrwrap:-webkit-full-screen svg{max-height:70vh;}
-#pcrwrap:fullscreen .st{font-size:19px;}
-#pcrwrap:fullscreen .sd{font-size:16px;}
-#pcrwrap:fullscreen button{font-size:15px;padding:8px 16px;}
-#pcrwrap:fullscreen .dot{padding:0;font-size:0;width:12px;height:12px;}
-#pcrwrap.fsfake{position:fixed;top:0;left:0;right:0;bottom:0;z-index:2147483647;max-width:none;width:100%;height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;overflow:auto;padding:20px 24px;}
-#pcrwrap.fsfake .hd{font-size:22px;}
-#pcrwrap.fsfake svg{max-height:70vh;}
-#pcrwrap.fsfake .st{font-size:19px;}
-#pcrwrap.fsfake .sd{font-size:16px;}
-#pcrwrap.fsfake button{font-size:15px;padding:8px 16px;}
-#pcrwrap.fsfake .dot{padding:0;font-size:0;width:12px;height:12px;}
+#pcrwrap:fullscreen{max-width:none;width:100%;height:100%;margin:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;overflow:auto;}
+#pcrwrap:fullscreen svg{max-height:78vh;}
 </style>
 <div class="hd">Tetra-Primer-ARMS-PCR am TAS2R38 – Schritt für Schritt</div>
-<svg id="stage" viewBox="-70 0 830 300" role="img" aria-label="Animation der ARMS-PCR am TAS2R38-Gen">
+<svg id="stage" viewBox="0 0 680 300" role="img" aria-label="Animation der ARMS-PCR am TAS2R38-Gen">
 <g id="sceneA">
 <line class="strand" x1="54" y1="100" x2="662" y2="100"/>
 <line class="strand" x1="54" y1="112" x2="662" y2="112"/>
-<line class="strandx" x1="-46" y1="100" x2="54" y2="100"/>
-<line class="strandx" x1="-46" y1="112" x2="54" y2="112"/>
-<line class="strandx" x1="662" y1="100" x2="740" y2="100"/>
-<line class="strandx" x1="662" y1="112" x2="740" y2="112"/>
-<text class="ts" x="-46" y="134">genomische DNA</text>
-<text class="ts" x="-52" y="98" text-anchor="end">5′</text>
-<text class="ts" x="746" y="98">3′</text>
-<text class="ts" x="-52" y="110" text-anchor="end">3′</text>
-<text class="ts" x="746" y="110">5′</text>
+<text class="ts" x="50" y="98" text-anchor="end">5′</text>
+<text class="ts" x="666" y="98">3′</text>
+<text class="ts" x="50" y="110" text-anchor="end">3′</text>
+<text class="ts" x="666" y="110">5′</text>
+<text class="ts" x="8" y="98">+</text>
+<text class="ts" x="8" y="110">−</text>
 <line class="mk" x1="302.8" y1="96" x2="302.8" y2="100"/>
 <text class="ts" x="302.8" y="74" text-anchor="middle">ATG · 5085</text>
 <line class="snp" x1="437.8" y1="80" x2="437.8" y2="132"/>
-<text class="ts" x="437.8" y="162" text-anchor="middle">SNP c.145 · 5229</text>
+<text class="ts" x="437.8" y="150" text-anchor="middle">SNP c.145 · 5229</text>
 <g id="primers">
 <rect class="gf" x="60" y="84" width="34.7" height="7" rx="2"/>
 <polygon class="tri" points="94.7,83 103.7,87.5 94.7,92"/>
@@ -114,7 +95,7 @@
 <text id="l281" class="th t-ink" x="402.6" y="244">281 bp · Prolin → Taster</text>
 <line class="snp" x1="437.8" y1="182" x2="437.8" y2="250"/>
 </g>
-<g id="gel" style="display:none" transform="translate(60,0)">
+<g id="gel" style="display:none">
 <text class="th" x="8" y="26">Gelbild – Genotyp ablesen</text>
 <rect x="150" y="44" width="410" height="206" rx="6" fill="#f4f5f6" stroke="#cbd2d9" stroke-width="1"/>
 <rect x="177" y="86.7" width="30" height="4" fill="#b8c0c8"/><text class="ts" x="172" y="90.7" text-anchor="end">700</text>
@@ -152,9 +133,9 @@
 var W=document.getElementById('pcrwrap');
 var $=function(s){return W.querySelector(s);};
 var steps=[
-{t:"Ausgangslage: der DNA-Abschnitt",d:"Der TAS2R38-Abschnitt auf NG_016141.1. Die DNA geht auf beiden Seiten weiter (gestrichelt) – die PCR greift also einen Abschnitt mitten aus dem Genom heraus. Am SNP c.145 (Position 5229) entscheidet sich das Allel: C → Prolin (Taster), G → Alanin (Non-Taster)."},
+{t:"Ausgangslage: der DNA-Abschnitt",d:"Der TAS2R38-Abschnitt auf NG_016141.1. Am SNP c.145 (Position 5229) entscheidet sich das Allel: C → Prolin (Taster), G → Alanin (Non-Taster)."},
 {t:"Vier Primer lagern an",d:"Zwei äussere Primer (grau) rahmen den Abschnitt ein und binden immer. Zwei innere Primer sind allelspezifisch – ihr 3′-Ende sitzt genau auf dem SNP."},
-{t:"Synthese am 3′-Ende (5′→3′)",d:"Die Polymerase verlängert jeden Primer ab dem 3′-Ende. Die Primer auf dem oberen Strang (Outer Control 1, Inner Taster) synthetisieren nach rechts, die auf dem unteren Strang (Inner Non-Taster, Outer Control 2) nach links."},
+{t:"Synthese am 3′-Ende (5′→3′)",d:"Die Polymerase verlängert jeden Primer ab dem 3′-Ende. + Strang-Primer (Outer Control 1, Inner Taster) synthetisieren nach rechts, − Strang-Primer (Inner Non-Taster, Outer Control 2) nach links."},
 {t:"Produkt 1 · 640 bp (Kontrolle)",d:"Beide äusseren Primer zusammen ergeben das 640-bp-Fragment – unabhängig vom Allel, als Positivkontrolle."},
 {t:"Produkt 2 · 436 bp (Non-Taster)",d:"Outer Control 1 + Inner Non-Taster. Der Inner-Non-Taster-Primer bindet nur das Alanin-Allel → 436 bp = Non-Taster."},
 {t:"Produkt 3 · 281 bp (Taster)",d:"Inner Taster + Outer Control 2. Der Inner-Taster-Primer bindet nur das Prolin-Allel → 281 bp = Taster."},
@@ -193,37 +174,14 @@ var dc=$('#dots');for(var q=0;q<steps.length;q++){(function(idx){var b=document.
 $('#prev').onclick=function(){go(i-1);};
 $('#next').onclick=function(){go(i+1);};
 $('#reset').onclick=function(){go(0);};
-/* Vollbild: echtes Fullscreen, sonst Ersatz-Vollbild (z. B. in eingebetteten Ansichten/iframes) */
 var fsBtn=$('#fs');
-function natFs(){return document.fullscreenElement===W||document.webkitFullscreenElement===W;}
-function fakeFs(){return W.classList.contains('fsfake');}
-function inFs(){return natFs()||fakeFs();}
-function fsSync(){fsBtn.textContent=inFs()?'✕ Vollbild beenden':'⛶ Vollbild';}
-function enterFake(){W.classList.add('fsfake');try{document.documentElement.style.overflow='hidden';}catch(e){}fsSync();}
-function exitFake(){W.classList.remove('fsfake');try{document.documentElement.style.overflow='';}catch(e){}fsSync();}
-function fsEnter(){
-  var req=W.requestFullscreen||W.webkitRequestFullscreen;
-  if(req){
-    try{
-      var pr=req.call(W);
-      if(pr&&pr.then){pr.then(fsSync,function(){enterFake();});return;}
-      setTimeout(function(){if(!natFs()&&!fakeFs())enterFake();else fsSync();},250);return;
-    }catch(e){}
-  }
-  enterFake();
-}
-function fsLeave(){
-  if(natFs()){var ex=document.exitFullscreen||document.webkitExitFullscreen;if(ex){try{ex.call(document);}catch(e){}}}
-  if(fakeFs())exitFake();
-  fsSync();
-}
-fsBtn.onclick=function(){if(inFs())fsLeave();else fsEnter();};
-document.addEventListener('fullscreenchange',fsSync);document.addEventListener('webkitfullscreenchange',fsSync);
-document.addEventListener('keydown',function(e){
-  if(e.key==='ArrowRight'){go(i+1);}
-  else if(e.key==='ArrowLeft'){go(i-1);}
-  else if(e.key==='Escape'&&fakeFs()){exitFake();}
-  else if(e.key==='f'||e.key==='F'){fsBtn.onclick();}
+fsBtn.onclick=function(){
+  if(document.fullscreenElement){document.exitFullscreen();}
+  else if(W.requestFullscreen){W.requestFullscreen();}
+  else if(W.webkitRequestFullscreen){W.webkitRequestFullscreen();}
+};
+document.addEventListener('fullscreenchange',function(){
+  fsBtn.textContent=document.fullscreenElement===W?'⤡ Vollbild schliessen':'⛶ Vollbild';
 });
 render(0,true);
 })();
