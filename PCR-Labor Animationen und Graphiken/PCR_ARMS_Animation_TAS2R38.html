@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Tetra-Primer-ARMS-PCR · TAS2R38 – Animation</title>
+</head>
+<body style="margin:0;background:#f2f3f5;">
+<div id="pcrwrap">
+<style>
+#pcrwrap{max-width:740px;margin:16px auto;padding:18px 18px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:#1a1a1a;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+#pcrwrap .hd{font-size:16px;font-weight:600;margin:0 0 8px;}
+#pcrwrap svg{display:block;width:100%;height:auto;}
+#pcrwrap text{font-family:inherit;}
+#pcrwrap .t{font-size:14px;fill:#1a1a1a;}
+#pcrwrap .ts{font-size:12px;fill:#5b6472;}
+#pcrwrap .th{font-size:14px;font-weight:600;fill:#1a1a1a;}
+#pcrwrap .strand{stroke:#94a3b8;stroke-width:1.5;}
+#pcrwrap .mk{stroke:#5b6472;stroke-width:1;}
+#pcrwrap .snp{stroke:#5b6472;stroke-width:1;stroke-dasharray:3 3;}
+#pcrwrap .tri{fill:#1a1a1a;}
+#pcrwrap .gf{fill:#eceef0;stroke:#9aa1a9;stroke-width:.75;}
+#pcrwrap .cf{fill:#FAECE7;stroke:#D85A30;stroke-width:.75;}
+#pcrwrap .tf{fill:#E1F5EE;stroke:#1D9E75;stroke-width:.75;}
+#pcrwrap .g-ink{fill:#374151;}
+#pcrwrap .c-ink{fill:#712B13;}
+#pcrwrap .t-ink{fill:#085041;}
+#pcrwrap .growL{transform-box:fill-box;transform-origin:left center;}
+#pcrwrap .growR{transform-box:fill-box;transform-origin:right center;}
+#pcrwrap .stub{stroke:none;}
+#pcrwrap .stub.gray{fill:#9aa1a9;}
+#pcrwrap .stub.coral{fill:#D85A30;}
+#pcrwrap .stub.teal{fill:#1D9E75;}
+#pcrwrap .txt{min-height:52px;margin:6px 2px 10px;}
+#pcrwrap .st{font-size:15px;font-weight:600;margin-bottom:2px;}
+#pcrwrap .sd{font-size:13.5px;color:#374151;line-height:1.4;}
+#pcrwrap .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#pcrwrap button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid #cbd2d9;background:#f7f8f9;color:#1a1a1a;border-radius:8px;cursor:pointer;}
+#pcrwrap button:hover{background:#eef0f2;}
+#pcrwrap button:disabled{opacity:.4;cursor:default;}
+#pcrwrap #next{background:#1d9e75;border-color:#0f6e56;color:#fff;font-weight:600;}
+#pcrwrap #next:hover{background:#178a66;}
+#pcrwrap .dots{display:flex;gap:6px;margin-left:4px;}
+#pcrwrap .dot{width:10px;height:10px;border-radius:50%;background:#d1d5db;border:none;padding:0;cursor:pointer;}
+#pcrwrap .dot.on{background:#1d9e75;}
+#pcrwrap .cnt{margin-left:auto;font-size:12px;color:#5b6472;}
+#pcrwrap:fullscreen{max-width:none;width:100%;height:100%;margin:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;overflow:auto;}
+#pcrwrap:fullscreen svg{max-height:78vh;}
+</style>
+<div class="hd">Tetra-Primer-ARMS-PCR am TAS2R38 – Schritt für Schritt</div>
+<svg id="stage" viewBox="0 0 680 300" role="img" aria-label="Animation der ARMS-PCR am TAS2R38-Gen">
+<g id="sceneA">
+<line class="strand" x1="54" y1="100" x2="662" y2="100"/>
+<line class="strand" x1="54" y1="112" x2="662" y2="112"/>
+<text class="ts" x="50" y="98" text-anchor="end">5′</text>
+<text class="ts" x="666" y="98">3′</text>
+<text class="ts" x="50" y="110" text-anchor="end">3′</text>
+<text class="ts" x="666" y="110">5′</text>
+<text class="ts" x="8" y="98">+</text>
+<text class="ts" x="8" y="110">−</text>
+<line class="mk" x1="302.8" y1="96" x2="302.8" y2="100"/>
+<text class="ts" x="302.8" y="74" text-anchor="middle">ATG · 5085</text>
+<line class="snp" x1="437.8" y1="80" x2="437.8" y2="132"/>
+<text class="ts" x="437.8" y="150" text-anchor="middle">SNP c.145 · 5229</text>
+<g id="primers">
+<rect class="gf" x="60" y="84" width="34.7" height="7" rx="2"/>
+<polygon class="tri" points="94.7,83 103.7,87.5 94.7,92"/>
+<text class="ts" x="56" y="90" text-anchor="end">5′</text>
+<text class="ts" x="60" y="74">Outer Control 1</text>
+<rect class="tf" x="396.6" y="84" width="41.2" height="7" rx="2"/>
+<polygon class="tri" points="437.8,83 446.8,87.5 437.8,92"/>
+<text class="ts" x="392" y="90" text-anchor="end">5′</text>
+<text class="ts" x="416" y="74" text-anchor="middle">Inner Taster</text>
+<rect class="cf" x="440.6" y="120" width="27.2" height="7" rx="2"/>
+<polygon class="tri" points="440.6,119 431.6,123.5 440.6,128"/>
+<text class="ts" x="472" y="126">5′</text>
+<text class="ts" x="454" y="140" text-anchor="middle">Inner Non-Taster</text>
+<rect class="gf" x="627.2" y="120" width="31.9" height="7" rx="2"/>
+<polygon class="tri" points="627.2,119 618.2,123.5 627.2,128"/>
+<text class="ts" x="663" y="126">5′</text>
+<text class="ts" x="659" y="140" text-anchor="end">Outer Control 2</text>
+</g>
+<g id="synth">
+<rect class="stub gray growL" x="94.7" y="86" width="58" height="3"/>
+<rect class="stub teal growL" x="437.8" y="86" width="58" height="3"/>
+<rect class="stub coral growR" x="382.6" y="122" width="58" height="3"/>
+<rect class="stub gray growR" x="569.2" y="122" width="58" height="3"/>
+</g>
+<text class="th" x="8" y="176">Produkte (massstäblich)</text>
+<rect id="ctrlBar" class="gf growL" x="60" y="184" width="599.1" height="16" rx="3"/>
+<text id="ctrlLbl" class="th g-ink" x="66" y="196">640 bp · Kontrolle</text>
+<rect id="b436" class="cf growL" x="60" y="208" width="407.8" height="16" rx="3"/>
+<text id="l436" class="th c-ink" x="66" y="220">436 bp · Alanin → Non-Taster</text>
+<rect id="b281" class="tf growR" x="396.6" y="232" width="262.5" height="16" rx="3"/>
+<text id="l281" class="th t-ink" x="402.6" y="244">281 bp · Prolin → Taster</text>
+<line class="snp" x1="437.8" y1="182" x2="437.8" y2="250"/>
+</g>
+<g id="gel" style="display:none">
+<text class="th" x="8" y="26">Gelbild – Genotyp ablesen</text>
+<rect x="150" y="44" width="410" height="206" rx="6" fill="#f4f5f6" stroke="#cbd2d9" stroke-width="1"/>
+<rect x="177" y="86.7" width="30" height="4" fill="#b8c0c8"/><text class="ts" x="172" y="90.7" text-anchor="end">700</text>
+<rect x="177" y="139.6" width="30" height="4" fill="#b8c0c8"/><text class="ts" x="172" y="143.6" text-anchor="end">500</text>
+<rect x="177" y="177.3" width="30" height="4" fill="#b8c0c8"/><text class="ts" x="172" y="181.3" text-anchor="end">400</text>
+<rect x="177" y="215.1" width="30" height="4" fill="#b8c0c8"/><text class="ts" x="172" y="219.1" text-anchor="end">300</text>
+<rect x="282" y="49" width="46" height="5" rx="1" fill="#6b7280"/>
+<rect x="377" y="49" width="46" height="5" rx="1" fill="#6b7280"/>
+<rect x="472" y="49" width="46" height="5" rx="1" fill="#6b7280"/>
+<rect class="gf gelband" x="282" y="83.2" width="46" height="7" rx="2"/>
+<rect class="tf gelband" x="282" y="218.8" width="46" height="7" rx="2"/>
+<rect class="gf gelband" x="377" y="83.2" width="46" height="7" rx="2"/>
+<rect class="cf gelband" x="377" y="160.2" width="46" height="7" rx="2"/>
+<rect class="gf gelband" x="472" y="83.2" width="46" height="7" rx="2"/>
+<rect class="cf gelband" x="472" y="160.2" width="46" height="7" rx="2"/>
+<rect class="tf gelband" x="472" y="218.8" width="46" height="7" rx="2"/>
+<text class="ts" x="192" y="266" text-anchor="middle">Marker</text>
+<text class="ts" x="305" y="266" text-anchor="middle">TT · Taster</text>
+<text class="ts" x="400" y="266" text-anchor="middle">tt · Non-Taster</text>
+<text class="ts" x="495" y="266" text-anchor="middle">Tt · hetero</text>
+<text class="ts" x="150" y="286">640 bp immer · 436 bp = Non-Taster · 281 bp = Taster</text>
+</g>
+</svg>
+<div class="txt"><div class="st"></div><div class="sd"></div></div>
+<div class="ctl">
+<button id="prev">◀ Zurück</button>
+<button id="next">Weiter ▶</button>
+<button id="reset">↺ Zum Anfang</button>
+<button id="fs">⛶ Vollbild</button>
+<span class="dots" id="dots"></span>
+<span class="cnt" id="cnt"></span>
+</div>
+<script>
+(function(){
+var W=document.getElementById('pcrwrap');
+var $=function(s){return W.querySelector(s);};
+var steps=[
+{t:"Ausgangslage: der DNA-Abschnitt",d:"Der TAS2R38-Abschnitt auf NG_016141.1. Am SNP c.145 (Position 5229) entscheidet sich das Allel: C → Prolin (Taster), G → Alanin (Non-Taster)."},
+{t:"Vier Primer lagern an",d:"Zwei äussere Primer (grau) rahmen den Abschnitt ein und binden immer. Zwei innere Primer sind allelspezifisch – ihr 3′-Ende sitzt genau auf dem SNP."},
+{t:"Synthese am 3′-Ende (5′→3′)",d:"Die Polymerase verlängert jeden Primer ab dem 3′-Ende. + Strang-Primer (Outer Control 1, Inner Taster) synthetisieren nach rechts, − Strang-Primer (Inner Non-Taster, Outer Control 2) nach links."},
+{t:"Produkt 1 · 640 bp (Kontrolle)",d:"Beide äusseren Primer zusammen ergeben das 640-bp-Fragment – unabhängig vom Allel, als Positivkontrolle."},
+{t:"Produkt 2 · 436 bp (Non-Taster)",d:"Outer Control 1 + Inner Non-Taster. Der Inner-Non-Taster-Primer bindet nur das Alanin-Allel → 436 bp = Non-Taster."},
+{t:"Produkt 3 · 281 bp (Taster)",d:"Inner Taster + Outer Control 2. Der Inner-Taster-Primer bindet nur das Prolin-Allel → 281 bp = Taster."},
+{t:"Gelbild: Genotyp ablesen",d:"Nach Grösse aufgetrennt: 640 bp immer; 436 bp = Non-Taster, 281 bp = Taster. Beide Allelbanden zusammen = heterozygot (Tt)."}
+];
+var i=0;
+function disp(el,on){el.style.display=on?'':'none';}
+function grow(el){el.style.display='';el.animate([{transform:'scaleX(0)'},{transform:'scaleX(1)'}],{duration:650,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});}
+function fade(el){el.style.display='';el.animate([{opacity:0},{opacity:1}],{duration:480,fill:'both'});}
+function render(n,animate){
+  i=n;
+  disp($('#sceneA'), i<6);
+  disp($('#gel'), i===6);
+  disp($('#primers'), i>=1);
+  disp($('#synth'), i===2);
+  var showC=i>=3,show4=i>=4,show2=i>=5;
+  disp($('#ctrlBar'),showC);disp($('#ctrlLbl'),showC);
+  disp($('#b436'),show4);disp($('#l436'),show4);
+  disp($('#b281'),show2);disp($('#l281'),show2);
+  if(animate){
+    if(i===1) fade($('#primers'));
+    if(i===2){var s=W.querySelectorAll('#synth > rect');for(var k=0;k<s.length;k++)grow(s[k]);}
+    if(i===3) grow($('#ctrlBar'));
+    if(i===4) grow($('#b436'));
+    if(i===5) grow($('#b281'));
+    if(i===6){var g=W.querySelectorAll('#gel .gelband');for(var j=0;j<g.length;j++){(function(b,d){b.style.display='';b.animate([{opacity:0},{opacity:1}],{duration:380,delay:d*90,fill:'both'});})(g[j],j);}}
+  }
+  $('.st').textContent=steps[i].t;
+  $('.sd').textContent=steps[i].d;
+  $('#cnt').textContent='Schritt '+(i+1)+' / '+steps.length;
+  var dots=W.querySelectorAll('.dot');for(var m=0;m<dots.length;m++)dots[m].className='dot'+(m===i?' on':'');
+  $('#prev').disabled=(i===0);$('#next').disabled=(i===steps.length-1);
+}
+function go(n){if(n<0)n=0;if(n>steps.length-1)n=steps.length-1;render(n,true);}
+var dc=$('#dots');for(var q=0;q<steps.length;q++){(function(idx){var b=document.createElement('button');b.className='dot';b.setAttribute('aria-label','Schritt '+(idx+1));b.onclick=function(){go(idx);};dc.appendChild(b);})(q);}
+$('#prev').onclick=function(){go(i-1);};
+$('#next').onclick=function(){go(i+1);};
+$('#reset').onclick=function(){go(0);};
+var fsBtn=$('#fs');
+fsBtn.onclick=function(){
+  if(document.fullscreenElement){document.exitFullscreen();}
+  else if(W.requestFullscreen){W.requestFullscreen();}
+  else if(W.webkitRequestFullscreen){W.webkitRequestFullscreen();}
+};
+document.addEventListener('fullscreenchange',function(){
+  fsBtn.textContent=document.fullscreenElement===W?'⤡ Vollbild schliessen':'⛶ Vollbild';
+});
+render(0,true);
+})();
+</script>
+</div>
+</body>
+</html>

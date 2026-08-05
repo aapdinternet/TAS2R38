@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PCR im Detail – klickbare Animation</title>
+</head>
+<body style="margin:0;background:#f2f3f5;">
+<div id="pcrwrap">
+<style>
+#pcrwrap{max-width:860px;margin:16px auto;padding:18px 18px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:#1a1a1a;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+#pcrwrap .hd{font-size:16px;font-weight:600;margin:0 0 6px;}
+#pcrwrap svg{display:block;width:100%;height:auto;}
+#pcrwrap text{font-family:inherit;}
+#pcrwrap .lbl{font-size:11px;fill:#5b6472;}
+#pcrwrap .lbs{font-size:10px;fill:#5b6472;}
+#pcrwrap .ann{font-size:11px;font-weight:600;fill:#374151;}
+#pcrwrap .hbnd{stroke:#8a9199;stroke-width:1;}
+#pcrwrap .base{font-size:11px;font-weight:700;}
+#pcrwrap .taqE{fill:#70ad47;fill-opacity:.55;stroke:#4c7a2f;stroke-width:.75;}
+#pcrwrap .taqT{font-size:11px;font-weight:700;fill:#1b3d0f;}
+#pcrwrap .ax{stroke:#94a3b8;stroke-width:1;}
+#pcrwrap .curve{fill:none;stroke:#1d9e75;stroke-width:2;}
+#pcrwrap .cdot{fill:#1d9e75;}
+#pcrwrap .gd{stroke:#1d9e75;stroke-width:1;stroke-dasharray:4 4;opacity:.85;}
+#pcrwrap .txt{min-height:58px;margin:8px 2px 10px;}
+#pcrwrap .st{font-size:15px;font-weight:600;margin-bottom:2px;}
+#pcrwrap .sd{font-size:13.5px;color:#374151;line-height:1.45;}
+#pcrwrap .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#pcrwrap button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid #cbd2d9;background:#f7f8f9;color:#1a1a1a;border-radius:8px;cursor:pointer;}
+#pcrwrap button:hover{background:#eef0f2;}
+#pcrwrap button:disabled{opacity:.4;cursor:default;}
+#pcrwrap #next{background:#1d9e75;border-color:#0f6e56;color:#fff;font-weight:600;}
+#pcrwrap #next:hover{background:#178a66;}
+#pcrwrap .dots{display:flex;gap:5px;margin-left:4px;flex-wrap:wrap;}
+#pcrwrap .navdot{width:9px;height:9px;border-radius:50%;background:#d1d5db;border:none;padding:0;cursor:pointer;}
+#pcrwrap .navdot.on{background:#1d9e75;}
+#pcrwrap .cnt{margin-left:auto;font-size:12px;color:#5b6472;}
+#pcrwrap:fullscreen{max-width:none;width:100vw;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;}
+#pcrwrap:-webkit-full-screen{max-width:none;width:100vw;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;}
+#pcrwrap:fullscreen .hd{font-size:22px;}
+#pcrwrap:fullscreen svg{max-height:64vh;}
+#pcrwrap:-webkit-full-screen svg{max-height:64vh;}
+#pcrwrap:fullscreen .st{font-size:19px;}
+#pcrwrap:fullscreen .sd{font-size:16px;}
+#pcrwrap:fullscreen button{font-size:15px;padding:8px 16px;}
+#pcrwrap.fsfake{position:fixed;top:0;left:0;right:0;bottom:0;z-index:2147483647;max-width:none;width:100%;height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;margin:0;border:0;border-radius:0;background:#fff;overflow:auto;padding:20px 24px;}
+#pcrwrap.fsfake .hd{font-size:22px;}
+#pcrwrap.fsfake svg{max-height:64vh;}
+#pcrwrap.fsfake .st{font-size:19px;}
+#pcrwrap.fsfake .sd{font-size:16px;}
+#pcrwrap.fsfake button{font-size:15px;padding:8px 16px;}
+</style>
+<div class="hd">PCR im Detail – doppelsträngig, zwei Primer, drei Zyklen (klickbar)</div>
+<svg id="stage" viewBox="0 0 700 300" role="img" aria-label="Klickbare PCR-Animation: doppelsträngige DNA, Vorwärts- und Rückwärts-Primer im Strangesinneren, gegenläufige Synthese, drei Zyklen, exponentielle Vermehrung">
+<g id="molG">
+<g id="tempBadge" style="display:none"><rect id="tempRect" x="556" y="8" width="120" height="22" rx="11" fill="#e5e7eb"/><text id="tempTxt" x="616" y="23" text-anchor="middle" font-size="14" font-weight="700"></text></g>
+<text id="cyclabel" x="24" y="23" font-size="13" font-weight="700" fill="#0f6e56"></text>
+<g id="helixG"></g>
+<g id="ladderG" style="display:none">
+<g id="guideG"></g>
+<g id="tmplTopG"></g>
+<g id="tmplBotG"></g>
+<g id="hbMidG"></g>
+<g id="newUpG"></g>
+<g id="hbUpG"></g>
+<g id="newDnG"></g>
+<g id="hbDnG"></g>
+<g id="lblG"></g>
+<g id="polyUpG" style="opacity:0"><ellipse class="taqE" cx="52" cy="100" rx="21" ry="23"/><text class="taqT" x="52" y="104" text-anchor="middle">Taq</text></g>
+<g id="polyDnG" style="opacity:0"><ellipse class="taqE" cx="72" cy="224" rx="21" ry="23"/><text class="taqT" x="72" y="228" text-anchor="middle">Taq</text></g>
+</g>
+</g>
+<g id="schemG" style="display:none"></g>
+<g id="legG" style="display:none"></g>
+<g id="expoG" style="display:none"></g>
+</svg>
+<div class="txt"><div class="st"></div><div class="sd"></div></div>
+<div class="ctl">
+<button id="prev">◀ Zurück</button>
+<button id="next">Weiter ▶</button>
+<button id="reset">↺ Zum Anfang</button>
+<button id="fs">⛶ Vollbild</button>
+<span class="dots" id="dots"></span>
+<span class="cnt" id="cnt"></span>
+</div>
+<script>
+(function(){
+var W=document.getElementById('pcrwrap');var NS='http://www.w3.org/2000/svg';
+var $=function(s){return W.querySelector(s);};
+
+/* ---------- Sequenz & Geometrie ---------- */
+var TOP="CGTACGGATTCGACTGGATCCAGTGCCTAGGTAACGGCTA";
+var CM={A:'T',T:'A',G:'C',C:'G'};
+var BOT=TOP.split('').map(function(b){return CM[b];});
+var N=TOP.length;                 /* 40 Basen sichtbar, Original geht weiter */
+var FP0=8,FP1=15;                 /* Vorwärts-Primer (auf dem oberen Strang-Sinn) */
+var RP0=24,RP1=31;                /* Rückwärts-Primer */
+var AMP=RP1-FP0+1;                /* 24 bp */
+var x0=62,cw=14;
+function xi(c){return x0+c*cw;}
+var GL=xi(FP0)-7,GR=xi(RP1)+7,GC=(GL+GR)/2;
+
+var COL={A:'#2e7d32',T:'#c62828',G:'#ef6c00',C:'#1565c0'};
+var C_GENO='#2f6ca8',C_PRIMER='#ea7317',C_NEW='#4c9a2a',C_OVER='#a8cf96';
+
+/* y-Koordinaten */
+var MT={let:150,bb:136},MB={let:173,bb:181};      /* geschlossener Doppelstrang (Mitte) */
+var UT={let:82,bb:68},DB={let:240,bb:248};        /* getrennte Matrizen (oben/unten) */
+var UN={let:105,bb:113},DN={let:217,bb:203};      /* neue Stränge */
+var DYT=UT.let-MT.let,DYB=DB.let-MB.let;          /* -68 / +67 */
+
+function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+function put(g,el,txt){if(txt!=null)el.textContent=txt;g.appendChild(el);return el;}
+function baseText(c,y,ch){return E('text',{x:xi(c),y:y,'text-anchor':'middle','class':'base',fill:COL[ch]});}
+function bar(a,b,y,color,h){return E('rect',{x:xi(a)-7,y:y,width:(b-a)*cw+14,height:(h||4),rx:2,fill:color});}
+function hbn(ch){return (ch==='G'||ch==='C')?3:2;}
+
+var helixG=$('#helixG'),guideG=$('#guideG'),lblG=$('#lblG'),legG=$('#legG'),
+    tmplTopG=$('#tmplTopG'),tmplBotG=$('#tmplBotG'),hbMidG=$('#hbMidG'),
+    newUpG=$('#newUpG'),newDnG=$('#newDnG'),hbUpG=$('#hbUpG'),hbDnG=$('#hbDnG'),
+    polyUpG=$('#polyUpG'),polyDnG=$('#polyDnG'),schemG=$('#schemG'),expoG=$('#expoG');
+
+/* ---------- Doppelhelix ---------- */
+function buildHelix(){
+  helixG.innerHTML='';var A=22,mid=158,L=76,xa=80,xb=610,p1=[],p2=[];
+  for(var x=xa;x<=xb;x+=4){var s=Math.sin(2*Math.PI*x/L);p1.push(x+','+(mid+A*s));p2.push(x+','+(mid-A*s));}
+  for(var xx=xa+8;xx<xb;xx+=18){var s2=Math.sin(2*Math.PI*xx/L);put(helixG,E('line',{x1:xx,y1:mid+A*s2,x2:xx,y2:mid-A*s2,stroke:'#8a9199','stroke-width':1}));}
+  put(helixG,E('polyline',{points:p1.join(' '),fill:'none',stroke:'#2f6ca8','stroke-width':3.5,'stroke-linecap':'round'}));
+  put(helixG,E('polyline',{points:p2.join(' '),fill:'none',stroke:'#1f4e79','stroke-width':3.5,'stroke-linecap':'round'}));
+  put(helixG,E('text',{x:xa-30,y:mid-18,'class':'lbl'}),"5′");put(helixG,E('text',{x:xb+8,y:mid-18,'class':'lbl'}),"3′");
+  put(helixG,E('text',{x:xa-30,y:mid+24,'class':'lbl'}),"3′");put(helixG,E('text',{x:xb+8,y:mid+24,'class':'lbl'}),"5′");
+  put(helixG,E('text',{x:44,y:mid+4,'text-anchor':'middle','font-size':16,fill:'#2f6ca8','font-weight':700}),"⋯");
+  put(helixG,E('text',{x:646,y:mid+4,'text-anchor':'middle','font-size':16,fill:'#2f6ca8','font-weight':700}),"⋯");
+  put(helixG,E('text',{x:350,y:232,'text-anchor':'middle','class':'lbl'}),"Genomische DNA – sehr lang; der gesuchte Abschnitt liegt irgendwo mitten darin");
+}
+
+/* ---------- Matrizenstränge (je Zyklus unterschiedlich lang) ---------- */
+var CYC1={topA:0,topB:N-1,topKind:'geno',botA:0,botB:N-1,botKind:'geno'};
+var CYC2={topA:FP0,topB:N-1,topKind:'prod',botA:0,botB:N-1,botKind:'geno'};
+var CYC3={topA:FP0,topB:N-1,topKind:'prod',botA:FP0,botB:RP1,botKind:'prod'};
+var CYC=CYC1;
+function drawTmpl(g,seq,ly,by,o,a,b,kind){
+  if(kind==='geno'){
+    put(g,bar(a,b,by,C_GENO));
+    put(g,E('line',{x1:xi(a)-9,y1:by+2,x2:xi(a)-36,y2:by+2,stroke:C_GENO,'stroke-width':2,'stroke-dasharray':'4 4',opacity:.6}));
+    put(g,E('line',{x1:xi(b)+9,y1:by+2,x2:xi(b)+36,y2:by+2,stroke:C_GENO,'stroke-width':2,'stroke-dasharray':'4 4',opacity:.6}));
+  }else{
+    segsFor({o:o,a:a,b:b}).forEach(function(s){put(g,bar(s.a,s.b,by,s.c));});
+  }
+  for(var c=a;c<=b;c++)put(g,baseText(c,ly,seq[c]),seq[c]);
+  var off=(kind==='geno')?40:11;
+  put(g,E('text',{x:xi(a)-off,y:ly,'text-anchor':'end','class':'lbl'}),(o==='t')?'5′':'3′');
+  put(g,E('text',{x:xi(b)+off,y:ly,'class':'lbl'}),(o==='t')?'3′':'5′');
+}
+/* Die Matrizen werden immer in Mittelstellung gezeichnet; "getrennt" ist nur eine
+   Verschiebung. So ist der Basiszustand des Elements immer gleich dem Endzustand
+   der Animation – sonst bleiben abgebrochene fill:forwards-Animationen hängen. */
+function renderTemplates(mode){
+  tmplTopG.innerHTML='';tmplBotG.innerHTML='';
+  drawTmpl(tmplTopG,TOP,MT.let,MT.bb,'t',CYC.topA,CYC.topB,CYC.topKind);
+  drawTmpl(tmplBotG,BOT,MB.let,MB.bb,'b',CYC.botA,CYC.botB,CYC.botKind);
+  var sp=(mode==='split');
+  tmplTopG.style.transform=sp?('translateY('+DYT+'px)'):'';
+  tmplBotG.style.transform=sp?('translateY('+DYB+'px)'):'';
+}
+
+/* ---------- neue Stränge ---------- */
+function segsFor(s){
+  if(s.geno)return [{a:0,b:N-1,c:C_GENO}];
+  var out=[];
+  if(s.o==='t'){
+    out.push({a:FP0,b:Math.min(s.b,FP1),c:C_PRIMER});
+    var a1=FP1+1,b1=Math.min(s.b,RP1);if(b1>=a1)out.push({a:a1,b:b1,c:C_NEW});
+    if(s.b>RP1)out.push({a:RP1+1,b:s.b,c:C_OVER});
+  }else{
+    out.push({a:Math.max(s.a,RP0),b:RP1,c:C_PRIMER});
+    var b2=RP0-1,a2=Math.max(s.a,FP0);if(b2>=a2)out.push({a:a2,b:b2,c:C_NEW});
+    if(s.a<FP0)out.push({a:s.a,b:FP0-1,c:C_OVER});
+  }
+  return out;
+}
+function renderNewUp(a,b){            /* Produkt des Rückwärts-Primers: 5′ rechts, wächst nach links */
+  newUpG.innerHTML='';if(b<a)return;
+  segsFor({o:'b',a:a,b:b}).forEach(function(s){put(newUpG,bar(s.a,s.b,UN.bb,s.c));});
+  for(var c=a;c<=b;c++)put(newUpG,baseText(c,UN.let,BOT[c]),BOT[c]);
+  put(newUpG,E('text',{x:xi(a)-11,y:UN.let,'text-anchor':'end','class':'lbl'}),'3′');
+  put(newUpG,E('text',{x:xi(b)+11,y:UN.let,'class':'lbl'}),'5′');
+}
+function renderNewDn(a,b){            /* Produkt des Vorwärts-Primers: 5′ links, wächst nach rechts */
+  newDnG.innerHTML='';if(b<a)return;
+  segsFor({o:'t',a:a,b:b}).forEach(function(s){put(newDnG,bar(s.a,s.b,DN.bb,s.c));});
+  for(var c=a;c<=b;c++)put(newDnG,baseText(c,DN.let,TOP[c]),TOP[c]);
+  put(newDnG,E('text',{x:xi(a)-11,y:DN.let,'text-anchor':'end','class':'lbl'}),'5′');
+  put(newDnG,E('text',{x:xi(b)+11,y:DN.let,'class':'lbl'}),'3′');
+}
+function hbSet(g,a,b,y1,y2,seq){
+  g.innerHTML='';if(b<a)return;
+  for(var c=a;c<=b;c++){var k=hbn(seq[c]),sx=xi(c)-(k-1)*1.5;
+    for(var j=0;j<k;j++){var xx=sx+j*3;put(g,E('line',{x1:xx,y1:y1,x2:xx,y2:y2,'class':'hbnd'}));}}
+}
+function hbMidFull(){hbSet(hbMidG,Math.max(CYC.topA,CYC.botA),Math.min(CYC.topB,CYC.botB),154,162,TOP);}
+function hbMidClear(){hbSet(hbMidG,1,0,154,162,TOP);}
+function hbUp(a,b){hbSet(hbUpG,a,b,85,94,TOP);}
+function hbDn(a,b){hbSet(hbDnG,a,b,221,230,TOP);}
+
+/* ---------- Taq ---------- */
+function polyUp(col){polyUpG.style.transform='translateX('+(col*cw)+'px)';}
+function polyDn(col){polyDnG.style.transform='translateX('+(col*cw)+'px)';}
+function showTaq(up,dn){polyUpG.style.opacity=up?1:0;polyDnG.style.opacity=dn?1:0;}
+function setTemp(txt,bg,fg){var b=$('#tempBadge');if(!txt){b.style.display='none';return;}
+  b.style.display='';$('#tempRect').setAttribute('fill',bg);var t=$('#tempTxt');t.textContent=txt;t.setAttribute('fill',fg);}
+
+/* ---------- Markierung der Zielsequenz ---------- */
+function setGuides(mode,noLabel){
+  guideG.innerHTML='';
+  if(!mode)return;
+  if(mode==='mid'){
+    put(guideG,E('rect',{x:GL,y:126,width:GR-GL,height:66,rx:4,fill:C_NEW,'fill-opacity':.09}));
+    put(guideG,E('line',{x1:GL,y1:118,x2:GL,y2:196,'class':'gd'}));
+    put(guideG,E('line',{x1:GR,y1:118,x2:GR,y2:196,'class':'gd'}));
+    if(!noLabel)put(guideG,E('text',{x:GC,y:112,'text-anchor':'middle','class':'ann',fill:'#0f6e56'}),'Zielsequenz (Amplikon) · '+AMP+' bp');
+  }else{
+    put(guideG,E('line',{x1:GL,y1:52,x2:GL,y2:264,'class':'gd'}));
+    put(guideG,E('line',{x1:GR,y1:52,x2:GR,y2:264,'class':'gd'}));
+    put(guideG,E('line',{x1:GL+4,y1:161,x2:GR-4,y2:161,stroke:'#0f6e56','stroke-width':1}));
+    put(guideG,E('polygon',{points:(GL+1)+',161 '+(GL+9)+',158 '+(GL+9)+',164',fill:'#0f6e56'}));
+    put(guideG,E('polygon',{points:(GR-1)+',161 '+(GR-9)+',158 '+(GR-9)+',164',fill:'#0f6e56'}));
+    put(guideG,E('text',{x:GC,y:152,'text-anchor':'middle','class':'ann',fill:'#0f6e56'}),'durch die Primer definiert · '+AMP+' bp');
+  }
+}
+function setLabels(step){
+  lblG.innerHTML='';
+  if((step>=3&&step<=6)||(step===9||step===10)||(step===15||step===16)){
+    put(lblG,E('text',{x:xi(25.5),y:130,'text-anchor':'middle','class':'ann',fill:'#a15208'}),'Rückwärts-Primer');
+    put(lblG,E('text',{x:xi(13),y:192,'text-anchor':'middle','class':'ann',fill:'#a15208'}),'Vorwärts-Primer');
+  }
+  if(step===5||step===6||step===10||step===16){
+    put(lblG,E('text',{x:xi(11),y:130,'text-anchor':'middle','class':'lbl'}),'3′ ◀ 5′');
+    put(lblG,E('text',{x:xi(28),y:192,'text-anchor':'middle','class':'lbl'}),'5′ ▶ 3′');
+  }
+  if(step===6){
+    put(lblG,E('text',{x:xi(3.5),y:130,'text-anchor':'middle','class':'lbl'}),'Überhang');
+    put(lblG,E('text',{x:xi(35.5),y:192,'text-anchor':'middle','class':'lbl'}),'Überhang');
+  }
+  if(step===7){
+    put(lblG,E('text',{x:xi(23.5),y:116,'text-anchor':'middle','class':'ann',fill:'#a15208'}),'neuer Strang aus Zyklus 1 – beginnt am Primer');
+    put(lblG,E('text',{x:xi(5),y:202,'text-anchor':'middle','class':'ann',fill:'#1f4e79'}),'Original-DNA');
+  }
+  if(step===13){
+    put(lblG,E('text',{x:xi(23.5),y:116,'text-anchor':'middle','class':'ann',fill:'#a15208'}),'langer Strang aus Zyklus 1');
+    put(lblG,E('text',{x:GC,y:202,'text-anchor':'middle','class':'ann',fill:'#0f6e56'}),'exaktes Fragment aus Zyklus 2 · '+AMP+' bp');
+  }
+  if(step===10||step===11||step===16||step===17){
+    put(lblG,E('text',{x:xi(2.5),y:96,'text-anchor':'middle','class':'lbl'}),'Matrize');
+    put(lblG,E('text',{x:xi(2.5),y:110,'text-anchor':'middle','class':'lbl'}),'endet hier');
+  }
+  if(step===16||step===17){
+    put(lblG,E('text',{x:xi(36),y:240,'text-anchor':'middle','class':'lbl'}),'Matrize');
+    put(lblG,E('text',{x:xi(36),y:252,'text-anchor':'middle','class':'lbl'}),'endet hier');
+  }
+  if(step===11){
+    put(lblG,E('rect',{x:GL,y:96,width:GR-GL,height:26,rx:5,fill:'#1d9e75','fill-opacity':.13}));
+    put(lblG,E('text',{x:GC,y:134,'text-anchor':'middle','class':'ann',fill:'#0f6e56'}),'exaktes Fragment – beide Enden definiert');
+    put(lblG,E('text',{x:xi(36.5),y:192,'text-anchor':'middle','class':'lbl'}),'weiterhin Überhang');
+  }
+  if(step===17){
+    put(lblG,E('rect',{x:GL,y:96,width:GR-GL,height:26,rx:5,fill:'#1d9e75','fill-opacity':.13}));
+    put(lblG,E('text',{x:GC,y:134,'text-anchor':'middle','class':'lbl'}),'neuer Strang: exakt');
+    put(lblG,E('rect',{x:GL-4,y:198,width:GR-GL+8,height:50,rx:6,fill:'#1d9e75','fill-opacity':.13}));
+    put(lblG,E('text',{x:GC,y:190,'text-anchor':'middle','class':'ann',fill:'#0f6e56'}),'fertiges Amplikon – beide Stränge exakt '+AMP+' bp');
+  }
+}
+
+/* ---------- Legende ---------- */
+function buildLegend(){
+  legG.innerHTML='';
+  var keys=[[C_GENO,'Original-DNA'],[C_PRIMER,'Primer'],[C_NEW,'neu synthetisiert'],[C_OVER,'Überhang']];
+  var x=150;
+  keys.forEach(function(k){
+    put(legG,E('rect',{x:x,y:280,width:14,height:5,rx:2.5,fill:k[0]}));
+    var t=put(legG,E('text',{x:x+19,y:286,'class':'lbs'}),k[1]);
+    x+=19+k[1].length*5.6+20;
+  });
+}
+
+/* ---------- Generationen (Schema) ---------- */
+var GT={o:'t',a:0,b:N-1,geno:true},GB={o:'b',a:0,b:N-1,geno:true};
+function nextGen(dups){
+  var out=[];
+  dups.forEach(function(d){
+    out.push({top:d.top,bot:{o:'b',a:d.top.a,b:RP1}});      /* oberer Strang als Matrize → Rückwärts-Primer */
+    out.push({top:{o:'t',a:FP0,b:d.bot.b},bot:d.bot});      /* unterer Strang als Matrize → Vorwärts-Primer */
+  });
+  return out;
+}
+var gens=[[{top:GT,bot:GB}]];
+for(var g=1;g<=3;g++)gens[g]=nextGen(gens[g-1]);
+function isExact(s){return !s.geno&&s.a===FP0&&s.b===RP1;}
+function drawSchemStrand(s,y){
+  segsFor(s).forEach(function(sg){put(schemG,bar(sg.a,sg.b,y,sg.c,5));});
+  if(s.geno){
+    put(schemG,E('line',{x1:xi(0)-9,y1:y+2.5,x2:xi(0)-30,y2:y+2.5,stroke:C_GENO,'stroke-width':2,'stroke-dasharray':'4 4',opacity:.6}));
+    put(schemG,E('line',{x1:xi(N-1)+9,y1:y+2.5,x2:xi(N-1)+30,y2:y+2.5,stroke:C_GENO,'stroke-width':2,'stroke-dasharray':'4 4',opacity:.6}));
+  }
+}
+function renderSchem(gen){
+  schemG.innerHTML='';
+  var dups=gens[gen],n=dups.length;
+  var few=(n<=4),pitch=few?44:26,y0=few?86:58;
+  var gTop=few?56:44,gBot=y0+(n-1)*pitch+20;
+  put(schemG,E('line',{x1:GL,y1:gTop,x2:GL,y2:gBot,'class':'gd'}));
+  put(schemG,E('line',{x1:GR,y1:gTop,x2:GR,y2:gBot,'class':'gd'}));
+  put(schemG,E('text',{x:24,y:24,'font-size':13,'font-weight':700,fill:'#0f6e56'}),'Zyklus '+gen+' · '+n+' Doppelstränge');
+  put(schemG,E('text',{x:GC,y:gTop-6,'text-anchor':'middle','class':'ann',fill:'#0f6e56'}),'Fragment · '+AMP+' bp');
+  var exS=0,exD=0;
+  dups.forEach(function(d,k){
+    var y=y0+k*pitch,ex=isExact(d.top)&&isExact(d.bot);
+    if(ex){exD++;put(schemG,E('rect',{x:20,y:y-7,width:600,height:28,rx:6,fill:'#1d9e75','fill-opacity':.10}));}
+    drawSchemStrand(d.top,y);drawSchemStrand(d.bot,y+9);
+    if(isExact(d.top))exS++;if(isExact(d.bot))exS++;
+    if(ex)put(schemG,E('text',{x:632,y:y+13,'font-size':14,'font-weight':700,fill:'#0f6e56'}),'✓');
+  });
+  put(schemG,E('text',{x:676,y:24,'text-anchor':'end','class':'lbl'}),exS+' von '+(2*n)+' Strängen exakt · '+exD+' fertige Amplikons');
+  anim(schemG,[{opacity:0},{opacity:1}],{duration:400,fill:'backwards'});
+}
+
+/* ---------- Exponentiell ---------- */
+function renderExpo(){
+  expoG.innerHTML='';
+  var xf=function(c){return 110+c*51;},yf=function(v){return 252-(v/1024)*176;};
+  put(expoG,E('line',{x1:110,y1:252,x2:630,y2:252,'class':'ax'}));
+  put(expoG,E('line',{x1:110,y1:252,x2:110,y2:70,'class':'ax'}));
+  var pts='';
+  for(var c=0;c<=10;c++){var v=Math.pow(2,c);pts+=xf(c)+','+yf(v)+' ';put(expoG,E('circle',{cx:xf(c),cy:yf(v),r:3,'class':'cdot'}));}
+  put(expoG,E('polyline',{points:pts.trim(),'class':'curve'}));
+  for(var c2=0;c2<=10;c2+=2)put(expoG,E('text',{x:xf(c2),y:268,'text-anchor':'middle','class':'lbs'}),c2);
+  put(expoG,E('text',{x:370,y:286,'text-anchor':'middle','class':'lbl'}),'Zyklus N');
+  put(expoG,E('text',{x:110,y:60,'text-anchor':'middle','class':'lbl'}),'Kopien');
+  put(expoG,E('text',{x:350,y:32,'text-anchor':'middle','font-size':15,'font-weight':700,fill:'#0f6e56'}),'Kopien des Fragments = 2ᴺ');
+  put(expoG,E('text',{x:350,y:52,'text-anchor':'middle','class':'lbl'}),'Zyklus 1 → 2 · Zyklus 2 → 4 · Zyklus 3 → 8 · … · Zyklus 30 → ≈ 10⁹');
+  put(expoG,E('text',{x:132,y:104,'class':'lbl'}),'Nur das definierte Fragment ('+AMP+' bp) wird exponentiell');
+  put(expoG,E('text',{x:132,y:120,'class':'lbl'}),'vervielfältigt – die langen Startprodukte bleiben in kleiner Zahl.');
+  anim(expoG,[{opacity:0},{opacity:1}],{duration:400,fill:'backwards'});
+}
+
+/* ---------- Schritte ---------- */
+var steps=[
+{t:"Ausgangslage: lange DNA",d:"Die genomische DNA ist sehr lang – sie reicht auf beiden Seiten über den Bildrand hinaus (⋯). Der Abschnitt, der vervielfältigt werden soll, liegt irgendwo mitten darin."},
+{t:"Zielsequenz im Doppelstrang",d:"Grün hinterlegt: die Zielsequenz, hier "+AMP+" Basenpaare. Links und rechts davon läuft die Original-DNA weiter – sie ist deutlich länger als das spätere PCR-Produkt."},
+{t:"Zyklus 1 · Denaturierung · 95 °C",d:"Hitze trennt die Wasserstoffbrücken (A=T zwei, G≡C drei). Beide Stränge liegen nun einzeln vor – und jeder von ihnen wird zur Matrize."},
+{t:"Zyklus 1 · Annealing · 55–65 °C",d:"Zwei verschiedene Primer binden – nicht am Ende, sondern mitten im Strang. Der Rückwärts-Primer hybridisiert am oberen, der Vorwärts-Primer am unteren Matrizenstrang. Ihr Abstand legt die Fragmentlänge fest."},
+{t:"Zyklus 1 · Taq bindet · 72 °C",d:"Je eine Taq-Polymerase setzt am freien 3′-Ende eines Primers an. Die beiden Enzyme arbeiten in entgegengesetzte Richtungen, weil die Stränge antiparallel sind."},
+{t:"Zyklus 1 · Elongation · 72 °C",d:"Beide neuen Stränge wachsen gleichzeitig, immer in 5′→3′-Richtung. Die Taq läuft bis zum Ende der Matrize – also über die Zielsequenz hinaus (hellgrün)."},
+{t:"Zyklus 1 · Ergebnis",d:"Aus 1 Doppelstrang sind 2 geworden. Die neuen Stränge beginnen exakt am Primer, enden aber erst am Matrizenende: noch kein Fragment mit definierter Länge."},
+{t:"Zyklus 2 · Ausgangspunkt",d:"Wir verfolgen einen der beiden Doppelstränge aus Zyklus 1: unten der Originalstrang, oben der neue Strang aus Zyklus 1. Dieser beginnt am Primer und ist deshalb kürzer – links steht der Originalstrang einzeln über."},
+{t:"Zyklus 2 · Denaturierung · 95 °C",d:"Wieder 95 °C, die Stränge trennen sich. Neu ist: Jetzt wird auch der kürzere Strang aus Zyklus 1 zur Matrize."},
+{t:"Zyklus 2 · Annealing · 55–65 °C",d:"Dieselben zwei Primer binden erneut. Oben bindet der Rückwärts-Primer an den kurzen Strang aus Zyklus 1, unten der Vorwärts-Primer an den Originalstrang."},
+{t:"Zyklus 2 · Elongation · 72 °C",d:"Oben endet die Matrize schon dort, wo in Zyklus 1 der Vorwärts-Primer sass: Die Taq hat nichts mehr abzulesen und stoppt genau am Anfang der Zielsequenz. Unten läuft sie wie zuvor bis zum Ende der Original-DNA."},
+{t:"Zyklus 2 · erstes exaktes Amplikon",d:"Oben ist zum ersten Mal ein Strang mit exakter Fragmentlänge entstanden – beide Enden sind durch die Primer festgelegt ("+AMP+" bp). Unten entsteht weiterhin ein Produkt mit unbestimmtem Ende. Erst ab Zyklus 2 gibt es also die richtige Amplikonlänge."},
+{t:"Zyklus 2 · Übersicht: 4 Doppelstränge",d:"Alle vier Doppelstränge aus Zyklus 2 im gleichen Längenmassstab. Zwei der acht Stränge haben nun die exakte Fragmentlänge – ein vollständig exaktes Amplikon (beide Stränge) gibt es noch nicht."},
+{t:"Zyklus 3 · Ausgangspunkt",d:"Wir verfolgen den Doppelstrang von vorher weiter: oben der lange Strang aus Zyklus 1, unten das exakte Fragment aus Zyklus 2. Beide werden jetzt zur Matrize."},
+{t:"Zyklus 3 · Denaturierung · 95 °C",d:"95 °C, die Stränge trennen sich. Entscheidend: Auch das exakte Fragment aus Zyklus 2 ist jetzt Matrize – und es endet auf beiden Seiten genau dort, wo die Primer sitzen."},
+{t:"Zyklus 3 · Annealing · 55–65 °C",d:"Wieder binden dieselben zwei Primer. Unten sitzt der Vorwärts-Primer direkt am Anfang der Matrize, weil diese schon exakt zugeschnitten ist."},
+{t:"Zyklus 3 · Elongation · 72 °C",d:"Beide Polymerasen stoppen am Matrizenende – und dieses Ende ist bei beiden durch einen Primer festgelegt. Es entstehen nur noch Stränge mit exakter Fragmentlänge."},
+{t:"Zyklus 3 · fertiges Amplikon",d:"Unten liegt zum ersten Mal ein vollständig definiertes Amplikon vor: beide Stränge genau "+AMP+" bp, kein Überhang mehr. Ab jetzt kopiert sich das Amplikon selbst – jede weitere Runde verdoppelt genau dieses Fragment."},
+{t:"Zyklus 3 · Übersicht: 8 Doppelstränge",d:"Alle acht Doppelstränge aus Zyklus 3. Zwei sind vollständig exakte Amplikons (✓), acht der 16 Stränge haben die exakte Länge. Die Original-DNA bleibt in konstanter Zahl – vermehrt wird praktisch nur noch das Amplikon."},
+{t:"Exponentiell · 2ᴺ",d:"Ab hier verdoppelt sich das definierte Fragment in jedem Zyklus: Kopien = 2ᴺ. Nach rund 30 Zyklen sind es etwa 10⁹ Kopien – die langen Anfangsprodukte fallen mengenmässig nicht mehr ins Gewicht."}
+];
+
+/* ---------- Animationssteuerung ---------- */
+var i=0,token=0,raf=null,timers=[];
+function anim(el,fr,op){return el.animate(fr,op);}
+function later(fn,ms){var id=setTimeout(fn,ms);timers.push(id);return id;}
+function killAnims(el){if(el&&el.getAnimations)el.getAnimations().forEach(function(a){a.cancel();});}
+function clearAnim(){
+  token++;if(raf){cancelAnimationFrame(raf);raf=null;}
+  for(var k=0;k<timers.length;k++)clearTimeout(timers[k]);timers=[];
+  [tmplTopG,tmplBotG,hbMidG,hbUpG,hbDnG,newUpG,newDnG,polyUpG,polyDnG,schemG,expoG].forEach(killAnims);
+  tmplTopG.style.transform='';tmplBotG.style.transform='';
+  tmplTopG.style.opacity=1;tmplBotG.style.opacity=1;
+  hbMidG.style.opacity=1;hbUpG.style.opacity=1;hbDnG.style.opacity=1;
+  newUpG.style.opacity=1;newDnG.style.opacity=1;
+  polyUpG.style.transition='none';polyDnG.style.transition='none';
+  polyUpG.style.opacity=0;polyDnG.style.opacity=0;
+  schemG.style.opacity=1;expoG.style.opacity=1;
+}
+function showView(v){
+  $('#molG').style.display=(v==='mol')?'':'none';
+  schemG.style.display=(v==='schem')?'':'none';
+  expoG.style.display=(v==='expo')?'':'none';
+  legG.style.display=(v==='expo')?'none':'';
+}
+function splitState(){                 /* getrennte Stränge, keine neuen Stränge */
+  renderTemplates('split');hbMidClear();setGuides('split');
+}
+function denature(dur,tok,onDone){
+  renderTemplates('split');            /* Basis = getrennt */
+  hbMidFull();hbMidG.style.opacity=0;  /* Basis = ohne H-Brücken */
+  setGuides('mid');
+  newUpG.innerHTML='';newDnG.innerHTML='';hbUp(1,0);hbDn(1,0);showTaq(false,false);
+  anim(hbMidG,[{opacity:1},{opacity:0}],{duration:dur*0.55,fill:'backwards'});
+  anim(tmplBotG,[{transform:'translateY(0)'},{transform:'translateY('+DYB+'px)'}],{duration:dur,easing:'cubic-bezier(.4,0,.2,1)',fill:'backwards'});
+  var a=anim(tmplTopG,[{transform:'translateY(0)'},{transform:'translateY('+DYT+'px)'}],{duration:dur,easing:'cubic-bezier(.4,0,.2,1)',fill:'backwards'});
+  a.onfinish=function(){
+    if(tok!==token)return;
+    hbMidClear();hbMidG.style.opacity=1;setGuides('split');
+    if(onDone)onDone();
+  };
+}
+function anneal(dur,tok){
+  splitState();
+  renderNewUp(RP0,RP1);renderNewDn(FP0,FP1);hbUp(1,0);hbDn(1,0);showTaq(false,false);
+  anim(newUpG,[{transform:'translateY(26px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:dur,easing:'cubic-bezier(.4,0,.2,1)',fill:'backwards'});
+  anim(newDnG,[{transform:'translateY(-26px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:dur,easing:'cubic-bezier(.4,0,.2,1)',fill:'backwards'});
+  later(function(){if(tok!==token)return;
+    hbUp(RP0,RP1);hbDn(FP0,FP1);
+    anim(hbUpG,[{opacity:0},{opacity:1}],{duration:350,fill:'backwards'});
+    anim(hbDnG,[{opacity:0},{opacity:1}],{duration:350,fill:'backwards'});},dur*0.8);
+}
+function elongate(dur,tok,onDone){
+  /* beide Taq gleich schnell; wessen Matrize früher endet, stoppt früher */
+  var uT=CYC.topA,dT=CYC.botB,du=RP0-uT,dd=dT-FP1,dm=Math.max(du,dd);
+  var t0=null;showTaq(true,true);
+  polyUpG.style.transition='none';polyDnG.style.transition='none';
+  function frame(ts){
+    if(tok!==token)return;
+    if(t0===null)t0=ts;
+    var p=(ts-t0)/dur;if(p>1)p=1;
+    var adv=p*dm;
+    var ua=Math.round(RP0-Math.min(adv,du));
+    var db=Math.round(FP1+Math.min(adv,dd));
+    renderNewUp(ua,RP1);hbUp(ua,RP1);polyUp(ua);
+    renderNewDn(FP0,db);hbDn(FP0,db);polyDn(db);
+    if(p<1)raf=requestAnimationFrame(frame);else{raf=null;if(onDone)onDone();}
+  }
+  raf=requestAnimationFrame(frame);
+}
+
+function render(n){
+  clearAnim();i=n;var tok=token;
+  CYC=(n>=13&&n<=17)?CYC3:((n>=7&&n<=11)?CYC2:CYC1);
+  $('.st').textContent=steps[n].t;$('.sd').textContent=steps[n].d;
+  $('#cnt').textContent='Schritt '+(n+1)+' / '+steps.length;
+  var d=W.querySelectorAll('.navdot');for(var m=0;m<d.length;m++)d[m].className='navdot'+(m===n?' on':'');
+  $('#prev').disabled=(n===0);$('#next').disabled=(n===steps.length-1);
+
+  if(n===12){showView('schem');setTemp(null);renderSchem(2);return;}
+  if(n===18){showView('schem');setTemp(null);renderSchem(3);return;}
+  if(n===19){showView('expo');setTemp(null);renderExpo();return;}
+
+  showView('mol');
+  $('#ladderG').style.display=(n===0)?'none':'';
+  helixG.style.display=(n===0)?'':'none';
+  $('#cyclabel').textContent=(n>=13)?'Zyklus 3':((n>=7)?'Zyklus 2':(n>=2?'Zyklus 1':''));
+  setLabels(n);
+
+  if(n===0){setTemp(null);setGuides(null);return;}
+  if(n===1||n===7||n===13){setTemp(null);renderTemplates('mid');hbMidFull();setGuides('mid',n!==1);
+    newUpG.innerHTML='';newDnG.innerHTML='';hbUp(1,0);hbDn(1,0);showTaq(false,false);return;}
+  if(n===2||n===8||n===14){setTemp('95 °C','#f6d0c8','#7a1f10');denature(1700,tok,null);return;}
+  if(n===3||n===9||n===15){setTemp('55–65 °C','#cfe0f2','#123a63');anneal(1300,tok);return;}
+  if(n===4){setTemp('72 °C','#fbe3c8','#7a4410');
+    splitState();renderNewUp(RP0,RP1);renderNewDn(FP0,FP1);hbUp(RP0,RP1);hbDn(FP0,FP1);
+    polyUp(RP0);polyDn(FP1);showTaq(true,true);
+    anim(polyUpG,[{opacity:0},{opacity:1}],{duration:450,fill:'backwards'});
+    anim(polyDnG,[{opacity:0},{opacity:1}],{duration:450,fill:'backwards'});return;}
+  if(n===5){setTemp('72 °C','#fbe3c8','#7a4410');
+    splitState();renderNewUp(RP0,RP1);renderNewDn(FP0,FP1);hbUp(RP0,RP1);hbDn(FP0,FP1);
+    polyUp(RP0);polyDn(FP1);elongate(2800,tok,null);return;}
+  if(n===10||n===16){setTemp('72 °C','#fbe3c8','#7a4410');
+    splitState();renderNewUp(RP0,RP1);renderNewDn(FP0,FP1);hbUp(RP0,RP1);hbDn(FP0,FP1);
+    polyUp(RP0);polyDn(FP1);showTaq(true,true);
+    anim(polyUpG,[{opacity:0},{opacity:1}],{duration:400,fill:'backwards'});
+    anim(polyDnG,[{opacity:0},{opacity:1}],{duration:400,fill:'backwards'});
+    later(function(){if(tok!==token)return;elongate(2400,tok,null);},700);return;}
+  if(n===6||n===11||n===17){setTemp(null);
+    $('#cyclabel').textContent=(n===6)?'Zyklus 1 → 2 Doppelstränge':((n===11)?'Zyklus 2 → erstes exaktes Fragment':'Zyklus 3 → fertiges Amplikon');
+    var uEnd=CYC.topA,dEnd=CYC.botB;
+    splitState();renderNewUp(uEnd,RP1);renderNewDn(FP0,dEnd);hbUp(uEnd,RP1);hbDn(FP0,dEnd);
+    setLabels(n);polyUp(uEnd);polyDn(dEnd);showTaq(false,false);
+    anim(polyUpG,[{opacity:1,transform:'translateX('+(uEnd*cw)+'px) translateY(0)'},{opacity:0,transform:'translateX('+(uEnd*cw)+'px) translateY(-46px)'}],{duration:900,easing:'ease-in',fill:'backwards'});
+    anim(polyDnG,[{opacity:1,transform:'translateX('+(dEnd*cw)+'px) translateY(0)'},{opacity:0,transform:'translateX('+(dEnd*cw)+'px) translateY(46px)'}],{duration:900,easing:'ease-in',fill:'backwards'});return;}
+}
+function go(n){if(n<0)n=0;if(n>steps.length-1)n=steps.length-1;render(n);}
+var dc=$('#dots');
+for(var q=0;q<steps.length;q++){(function(idx){var b=document.createElement('button');b.className='navdot';b.setAttribute('aria-label','Schritt '+(idx+1));b.onclick=function(){go(idx);};dc.appendChild(b);})(q);}
+$('#prev').onclick=function(){go(i-1);};$('#next').onclick=function(){go(i+1);};$('#reset').onclick=function(){go(0);};
+/* Vollbild: echtes Fullscreen, sonst Ersatz-Vollbild (z. B. in eingebetteten Ansichten/iframes) */
+var fsbtn=$('#fs');
+function natFs(){return document.fullscreenElement===W||document.webkitFullscreenElement===W;}
+function fakeFs(){return W.classList.contains('fsfake');}
+function inFs(){return natFs()||fakeFs();}
+function fsSync(){fsbtn.textContent=inFs()?'✕ Vollbild beenden':'⛶ Vollbild';}
+function enterFake(){W.classList.add('fsfake');try{document.documentElement.style.overflow='hidden';}catch(e){}fsSync();}
+function exitFake(){W.classList.remove('fsfake');try{document.documentElement.style.overflow='';}catch(e){}fsSync();}
+function fsEnter(){
+  var req=W.requestFullscreen||W.webkitRequestFullscreen;
+  if(req){
+    try{
+      var p=req.call(W);
+      if(p&&p.then){p.then(fsSync,function(){enterFake();});return;}
+      setTimeout(function(){if(!natFs()&&!fakeFs())enterFake();else fsSync();},250);return;
+    }catch(e){}
+  }
+  enterFake();
+}
+function fsLeave(){
+  if(natFs()){var ex=document.exitFullscreen||document.webkitExitFullscreen;if(ex){try{ex.call(document);}catch(e){}}}
+  if(fakeFs())exitFake();
+  fsSync();
+}
+fsbtn.onclick=function(){if(inFs())fsLeave();else fsEnter();};
+document.addEventListener('fullscreenchange',fsSync);document.addEventListener('webkitfullscreenchange',fsSync);
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'){go(i+1);}
+  else if(e.key==='ArrowLeft'){go(i-1);}
+  else if(e.key==='Escape'&&fakeFs()){exitFake();}
+  else if(e.key==='f'||e.key==='F'){fsbtn.onclick();}
+});
+
+buildHelix();buildLegend();render(0);
+})();
+</script>
+</div>
+</body>
+</html>

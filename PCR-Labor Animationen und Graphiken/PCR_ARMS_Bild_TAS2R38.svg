@@ -1,0 +1,68 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img" font-family="'Segoe UI',Arial,sans-serif">
+<title>Tetra-Primer-ARMS-PCR am TAS2R38-Gen: Primerlage, Syntheserichtung und die drei Produkte</title>
+<desc>Massstaebliche Karte der vier Primer auf NG_016141.1 mit Syntheserichtung sowie die drei PCR-Produkte 640, 436 und 281 Basenpaare.</desc>
+<style>
+text{font-family:'Segoe UI',Arial,sans-serif;}
+.t{font-size:14px;fill:#1a1a1a;}
+.ts{font-size:12px;fill:#5b6472;}
+.th{font-size:14px;font-weight:600;fill:#1a1a1a;}
+.c-gray rect{fill:#eceef0;stroke:#9aa1a9;stroke-width:0.75;}
+.c-coral rect{fill:#FAECE7;stroke:#D85A30;stroke-width:0.75;}
+.c-teal rect{fill:#E1F5EE;stroke:#1D9E75;stroke-width:0.75;}
+.c-gray .th{fill:#374151;}
+.c-coral .th{fill:#712B13;}
+.c-teal .th{fill:#085041;}
+</style>
+<rect x="0" y="0" width="680" height="300" fill="#ffffff"/>
+<text class="th" x="8" y="18">A · Primer und Syntheserichtung auf NG_016141.1</text>
+<line x1="54" y1="84" x2="662" y2="84" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="54" y1="96" x2="662" y2="96" stroke="#94a3b8" stroke-width="1.5"/>
+<text class="ts" x="50" y="82" text-anchor="end">5′</text>
+<text class="ts" x="666" y="82">3′</text>
+<text class="ts" x="50" y="100" text-anchor="end">3′</text>
+<text class="ts" x="666" y="100">5′</text>
+<line x1="302.8" y1="80" x2="302.8" y2="88" stroke="#5b6472" stroke-width="1"/>
+<text class="ts" x="302.8" y="58" text-anchor="middle">ATG · 5085</text>
+<line x1="437.8" y1="62" x2="437.8" y2="120" stroke="#5b6472" stroke-width="1" stroke-dasharray="3 3"/>
+<text class="ts" x="437.8" y="150" text-anchor="middle">SNP c.145 · Position 5229</text>
+<g class="c-gray"><rect x="60" y="66" width="34.7" height="8" rx="2"/></g>
+<polygon points="94.7,65 103.7,70 94.7,75" fill="#1a1a1a"/>
+<text class="ts" x="56" y="73" text-anchor="end">5′</text>
+<text class="ts" x="60" y="58">Outer Control 1</text>
+<g class="c-teal"><rect x="396.6" y="66" width="41.2" height="8" rx="2"/></g>
+<polygon points="437.8,65 446.8,70 437.8,75" fill="#1a1a1a"/>
+<text class="ts" x="392" y="73" text-anchor="end">5′</text>
+<text class="ts" x="415" y="58" text-anchor="middle">Inner Taster</text>
+<g class="c-coral"><rect x="440.6" y="106" width="27.2" height="8" rx="2"/></g>
+<polygon points="440.6,105 431.6,110 440.6,115" fill="#1a1a1a"/>
+<text class="ts" x="472" y="113">5′</text>
+<text class="ts" x="454" y="130" text-anchor="middle">Inner Non-Taster</text>
+<g class="c-gray"><rect x="627.2" y="106" width="31.9" height="8" rx="2"/></g>
+<polygon points="627.2,105 618.2,110 627.2,115" fill="#1a1a1a"/>
+<text class="ts" x="663" y="113">5′</text>
+<text class="ts" x="659" y="130" text-anchor="end">Outer Control 2</text>
+<text class="ts" x="8" y="88">+</text>
+<text class="ts" x="8" y="100">−</text>
+<text class="th" x="8" y="174">B · Die drei Produkte — massstäblich</text>
+<g class="c-gray"><rect x="60" y="184" width="599.1" height="16" rx="3"/><text class="th" x="66" y="196">640 bp · Kontrolle (Outer Control 1 + 2)</text></g>
+<g class="c-coral"><rect x="60" y="208" width="407.8" height="16" rx="3"/><text class="th" x="66" y="220">436 bp · Alanin → Non-Taster</text></g>
+<g class="c-teal"><rect x="396.6" y="232" width="262.5" height="16" rx="3"/><text class="th" x="402.6" y="244">281 bp · Prolin → Taster</text></g>
+<line x1="437.8" y1="182" x2="437.8" y2="250" stroke="#5b6472" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="60" y1="264" x2="660" y2="264" stroke="#94a3b8" stroke-width="1"/>
+<line x1="60" y1="264" x2="60" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<line x1="153.8" y1="264" x2="153.8" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<line x1="247.5" y1="264" x2="247.5" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<line x1="341.3" y1="264" x2="341.3" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<line x1="435" y1="264" x2="435" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<line x1="528.8" y1="264" x2="528.8" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<line x1="622.5" y1="264" x2="622.5" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<line x1="660" y1="264" x2="660" y2="268" stroke="#94a3b8" stroke-width="1"/>
+<text class="ts" x="60" y="278" text-anchor="middle">0</text>
+<text class="ts" x="153.8" y="278" text-anchor="middle">100</text>
+<text class="ts" x="247.5" y="278" text-anchor="middle">200</text>
+<text class="ts" x="341.3" y="278" text-anchor="middle">300</text>
+<text class="ts" x="435" y="278" text-anchor="middle">400</text>
+<text class="ts" x="528.8" y="278" text-anchor="middle">500</text>
+<text class="ts" x="622.5" y="278" text-anchor="middle">600</text>
+<text class="ts" x="8" y="296">Skala in bp · Coral = Non-Taster (Ala) · Teal = Taster (Pro) · Grau = Kontrolle</text>
+</svg>
