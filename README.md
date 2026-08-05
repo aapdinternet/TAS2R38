@@ -1,6 +1,6 @@
 # TAS2R38 Bitterrezeptoren
 
-Hier findet sich die schrittweise [PCR-Animation](https://github.com/aapdinternet/TAS2R38/PCR_Funktionsweise_Animation.html)
+Hier findet sich die schrittweise [PCR-Animation](https://aapdinternet.github.io/TAS2R38/PCR_Funktionsweise_Animation.html)
 
 Die Webdarstellung ist in der index.html Datei angelegt  
 Damit kann die Webdarstellung unter [https://aapdinternet.github.io/if-fonds/](https://aapdinternet.github.io/if-fonds/) erreicht werden.
