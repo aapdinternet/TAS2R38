@@ -9,6 +9,7 @@ echo.
 
 rem --- Haengengebliebene Git-Lock-Dateien entfernen (OneDrive-Problem) ---
 del /q /s ".git\*.lock" >nul 2>&1
+rmdir /s /q ".git\rebase-merge" >nul 2>&1
 
 rem --- Aktuelle Aenderungen anzeigen ---
 echo Aenderungen:
@@ -34,7 +35,7 @@ if defined changes (
 
 echo.
 echo Hole neueste Stand von GitHub (z.B. README.md)...
-git pull --rebase origin main
+git pull origin main --no-rebase
 
 echo.
 echo Pushe nach origin main...
