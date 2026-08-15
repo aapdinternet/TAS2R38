@@ -6,3 +6,4 @@ Hier findet sich die schrittweise [PCR-Animation](https://aapdinternet.github.io
 
 Hier findet sich die [ARMS-PCR-Animation](https://aapdinternet.github.io/TAS2R38/PCR-Labor_Animationen_Graphiken/PCR_ARMS_Animation_TAS2R38.html)
 
+Das Konzeptdokument ist (https://aapdinternet.github.io/TAS2R38/Bitterrezeptor_Lernziele_Konzept/SPF-Tage_Bitterrezeptoren_AllesAusEinemGuss.docx)
