@@ -1,51 +1,41 @@
 @echo off
-chcp 65001 >nul
-setlocal enabledelayedexpansion
-cd /d "%~dp0"
 echo ============================================
-echo   Push nach GitHub (TAS2R38)
+echo  Push nach GitHub (TAS2R38)
 echo ============================================
-echo.
 
-rem --- Haengengebliebene Git-Lock-Dateien entfernen (OneDrive-Problem) ---
-del /q /s ".git\*.lock" >nul 2>&1
-rmdir /s /q ".git\rebase-merge" >nul 2>&1
-
-rem --- Aktuelle Aenderungen anzeigen ---
-echo Aenderungen:
-git status --short
-echo.
-
-rem --- Lokale Aenderungen (inkl. neue/untracked Dateien) ermitteln ---
-set "changes="
-for /f "delims=" %%i in ('git status --porcelain') do set "changes=1"
-
-rem --- Falls lokale Aenderungen vorliegen: committen ---
-if defined changes (
-  set "msg="
-  set /p "msg=Commit-Nachricht (Enter = 'update'): "
-  if "!msg!"=="" set "msg=update"
-  echo.
-  echo Committe lokale Aenderungen...
-  git add -A
-  git commit -m "!msg!"
-) else (
-  echo Keine neuen lokalen Aenderungen zum Committen.
+:: 1. Verfangene Merges automatisch bereinigen
+if exist .git\MERGE_HEAD (
+    echo [INFO] Unvollstaendigen Merge entdeckt. Setze zurueck...
+    git merge --abort > nul 2>&1
 )
 
-echo.
-echo Hole neueste Stand von GitHub (z.B. README.md)...
-git pull origin main --no-rebase
+:: 2. Lokale Aenderungen committen (falls vorhanden)
+git add .
+git commit -m "Automatisches Update" > nul 2>&1
 
+:: 3. Neuesten Stand von GitHub holen
+echo Hole neuesten Stand von GitHub...
+git pull origin main --no-rebase
+if %errorlevel% neq 0 (
+    echo.
+    echo [FEHLER] Pull fehlgeschlagen (Konflikt vorhanden).
+    echo Setze lokalen Zustand zurueck...
+    git merge --abort > nul 2>&1
+    echo Bitte pruefen Sie die Dateien manuell auf Konflikte.
+    pause
+    exit /b %errorlevel%
+)
+
+:: 4. Pushen
 echo.
 echo Pushe nach origin main...
 git push origin main
-
-echo.
-if "!errorlevel!"=="0" (
-  echo FERTIG - Push erfolgreich.
+if %errorlevel% neq 0 (
+    echo.
+    echo [FEHLER] Push fehlgeschlagen - siehe Meldung oben.
 ) else (
-  echo FEHLER beim Push - siehe Meldung oben.
+    echo.
+    echo [ERFOLG] Push erfolgreich abgeschlossen!
 )
-echo.
+
 pause
