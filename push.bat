@@ -3,19 +3,22 @@ echo ============================================
 echo  Push nach GitHub (TAS2R38)
 echo ============================================
 
-:: 1. Verfangene Merges automatisch bereinigen
+:: 1. Verfangene Merges und Swap-Dateien automatisch bereinigen
 if exist .git\MERGE_HEAD (
     echo [INFO] Unvollstaendigen Merge entdeckt. Setze zurueck...
     git merge --abort > nul 2>&1
+)
+if exist .git\.MERGE_MSG.swp (
+    del /f /q .git\.MERGE_MSG.swp > nul 2>&1
 )
 
 :: 2. Lokale Aenderungen committen (falls vorhanden)
 git add .
 git commit -m "Automatisches Update" > nul 2>&1
 
-:: 3. Neuesten Stand von GitHub holen
+:: 3. Neuesten Stand von GitHub holen (ohne Editor zu oeffnen)
 echo Hole neuesten Stand von GitHub...
-git pull origin main --no-rebase
+git pull origin main --no-rebase --no-edit
 if %errorlevel% neq 0 (
     echo.
     echo [FEHLER] Pull fehlgeschlagen (Konflikt vorhanden).
